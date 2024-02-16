@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_tacker/constans/colors.dart';
 import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/view/add_task_view.dart';
+import 'package:task_tacker/view/weather_view.dart';
 import 'tasks_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -18,7 +19,7 @@ class _HomeViewState extends State<HomeView> {
   static List<Widget> _widgetOptions = <Widget>[
     TasksView(),
     AddTaskView(),
-    Center(child: Text('Hava Durumu'))
+    WeatherView(),
   ];
 
   List<String> _iconList = [

@@ -9,7 +9,7 @@ import 'package:task_tacker/components/popup.dart';
 import 'package:task_tacker/constans/colors.dart';
 import 'package:task_tacker/model/task_model.dart';
 import 'package:task_tacker/responsive/media_query.dart';
-import 'package:task_tacker/services/hiveBoxes.dart';
+import 'package:task_tacker/services/hive_boxes.dart';
 import 'package:task_tacker/view/edit_task_view.dart';
 import 'package:task_tacker/view_model/add_task/add_task_cubit.dart';
 
