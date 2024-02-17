@@ -46,10 +46,8 @@ class _AddTaskViewState extends State<AddTaskView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kBgColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: kPrimaryColor,
           toolbarHeight: 70,
           centerTitle: false,
           titleSpacing: getScreenWidth(0.05),
@@ -93,11 +91,17 @@ class _AddTaskViewState extends State<AddTaskView> {
                           Size(getScreenWidth(0.20), 55)),
                       maximumSize: MaterialStatePropertyAll(
                           Size(getScreenWidth(0.20), 55)),
-                      backgroundColor: MaterialStatePropertyAll(Colors.white),
+                      backgroundColor: MaterialStatePropertyAll(
+                          Theme.of(context).colorScheme.secondary),
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                     ),
-                    child: Text('Add'),
+                    child: Text(
+                      'Add',
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).textTheme.displayLarge!.color),
+                    ),
                   ),
                 );
               },
@@ -171,7 +175,15 @@ class _AddTaskViewState extends State<AddTaskView> {
                                 actions: [chooseDueDate()],
                                 cancelButton: CupertinoActionSheetAction(
                                   onPressed: () => Navigator.pop(context),
-                                  child: Text('Cancel'),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge
+                                          ?.color,
+                                    ),
+                                  ),
                                 ),
                               );
                             },
@@ -203,7 +215,15 @@ class _AddTaskViewState extends State<AddTaskView> {
                                 actions: [choosePriority()],
                                 cancelButton: CupertinoActionSheetAction(
                                   onPressed: () => Navigator.pop(context),
-                                  child: Text('Cancel'),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge
+                                          ?.color,
+                                    ),
+                                  ),
                                 ),
                               );
                             },
@@ -272,7 +292,7 @@ class _AddTaskViewState extends State<AddTaskView> {
           onTap: () => Navigator.of(context).pop(true),
           child: CupertinoPicker(
             scrollController: FixedExtentScrollController(initialItem: 0),
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             itemExtent: 64,
             onSelectedItemChanged: (index) {
               setState(() {
@@ -287,7 +307,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                       item.toString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Theme.of(context).textTheme.displayLarge?.color,
                       ),
                     )))
                 .toList(),

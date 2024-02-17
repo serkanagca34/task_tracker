@@ -39,7 +39,7 @@ class _HomeViewState extends State<HomeView> {
     SizeConfig().init(context);
 
     return Scaffold(
-      backgroundColor: kBgColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Stack(
         children: [
           Center(child: _widgetOptions.elementAt(selectedIndex)),
@@ -69,7 +69,7 @@ class _HomeViewState extends State<HomeView> {
                 width: screenWidth,
                 height: 896,
                 decoration: BoxDecoration(
-                  color: kPrimaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(17),
                 ),
                 child: Padding(
@@ -100,7 +100,10 @@ class _HomeViewState extends State<HomeView> {
                                 _iconList[i],
                                 color: selectedIndex == i
                                     ? kSecondryColor
-                                    : Colors.white,
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .color,
                                 height: 30,
                               ),
                             ),

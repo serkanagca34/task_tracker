@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:task_tacker/constans/colors.dart';
 
 AppBar costumeAppBar({
   required String title,
@@ -9,7 +8,6 @@ AppBar costumeAppBar({
 }) {
   return AppBar(
     elevation: 0,
-    backgroundColor: kPrimaryColor,
     toolbarHeight: 70,
     centerTitle: centerTitle,
     title: Text(

@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:task_tacker/components/costume_appbar.dart';
 import 'package:task_tacker/components/popup.dart';
-import 'package:task_tacker/constans/colors.dart';
 import 'package:task_tacker/model/task_model.dart';
 import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/services/hive_boxes.dart';
@@ -27,13 +26,12 @@ class _TasksViewState extends State<TasksView> {
     super.initState();
     context.read<AddTaskCubit>().getTasks();
     horizontalDesingChange =
-        horizontalDesingChangeBox.get('horizontalDesingChangeBox') ?? false;
+        gridDesingChangeBox.get('gridDesingChangeBox') ?? false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: costumeAppBar(
           title: 'Tasks',
           leading: IconButton(
@@ -48,19 +46,17 @@ class _TasksViewState extends State<TasksView> {
                         padding: EdgeInsets.only(right: getScreenWidth(0.05)),
                         constraints: BoxConstraints(),
                         onPressed: () async {
-                          await horizontalDesingChangeBox.put(
-                              'horizontalDesingChangeBox',
-                              !horizontalDesingChange!);
+                          await gridDesingChangeBox.put(
+                              'gridDesingChangeBox', !horizontalDesingChange!);
                           setState(() {
                             horizontalDesingChange = !horizontalDesingChange!;
                           });
                         },
-                        icon: horizontalDesingChangeBox.get(
-                                'horizontalDesingChangeBox',
+                        icon: gridDesingChangeBox.get('gridDesingChangeBox',
                                 defaultValue: false)
-                            ? SvgPicture.asset('assets/icons/changeDesing.svg')
-                            : SvgPicture.asset(
-                                'assets/icons/grid-svgrepo-com.svg'),
+                            ? SvgPicture.asset(
+                                'assets/icons/grid-svgrepo-com.svg')
+                            : SvgPicture.asset('assets/icons/changeDesing.svg'),
                       )
                     : SizedBox.shrink();
               }
@@ -69,10 +65,9 @@ class _TasksViewState extends State<TasksView> {
           ]),
       body: Stack(
         children: [
-          horizontalDesingChangeBox.get('horizontalDesingChangeBox',
-                  defaultValue: false)
-              ? horizontalCard()
-              : gridListBuild(),
+          gridDesingChangeBox.get('gridDesingChangeBox', defaultValue: false)
+              ? gridListBuild()
+              : horizontalCard(),
         ],
       ),
     );
@@ -244,7 +239,9 @@ class _TasksViewState extends State<TasksView> {
                                       margin: EdgeInsets.only(
                                           bottom: getScreenHeight(0.03)),
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         borderRadius: BorderRadius.circular(20),
                                         boxShadow: [
                                           BoxShadow(
@@ -258,7 +255,12 @@ class _TasksViewState extends State<TasksView> {
                                         children: [
                                           SizedBox(width: getScreenWidth(0.05)),
                                           SvgPicture.asset(
-                                              'assets/icons/nodone.svg'),
+                                            'assets/icons/nodone.svg',
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .displayLarge
+                                                ?.color,
+                                          ),
                                           SizedBox(width: getScreenWidth(0.05)),
                                           // Title
                                           Expanded(
@@ -269,7 +271,10 @@ class _TasksViewState extends State<TasksView> {
                                               style: TextStyle(
                                                 fontFamily: 'PoppinsSemiBold',
                                                 fontSize: 14,
-                                                color: Colors.black,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .displayLarge
+                                                    ?.color,
                                               ),
                                             ),
                                           ),
@@ -371,7 +376,9 @@ class _TasksViewState extends State<TasksView> {
                                           vertical: getScreenHeight(0.02),
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           boxShadow: [
@@ -390,7 +397,12 @@ class _TasksViewState extends State<TasksView> {
                                           children: [
                                             // Title
                                             SvgPicture.asset(
-                                                'assets/icons/nodone.svg'),
+                                              'assets/icons/nodone.svg',
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .displayLarge
+                                                  ?.color,
+                                            ),
                                             Text(
                                               tasks.title,
                                               overflow: TextOverflow.ellipsis,
@@ -398,7 +410,10 @@ class _TasksViewState extends State<TasksView> {
                                               style: TextStyle(
                                                 fontFamily: 'PoppinsSemiBold',
                                                 fontSize: 14,
-                                                color: Colors.black,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .displayLarge
+                                                    ?.color,
                                               ),
                                             ),
                                             // Priority
@@ -457,7 +472,9 @@ class _TasksViewState extends State<TasksView> {
                                           child: Container(
                                             padding: EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
                                               shape: BoxShape.circle,
                                             ),
                                             child: SvgPicture.asset(
@@ -493,7 +510,7 @@ class _TasksViewState extends State<TasksView> {
       context: context,
       builder: (context) {
         return Scaffold(
-          backgroundColor: kBgColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           body: Column(
             children: [
               SizedBox(height: getScreenHeight(0.02)),
@@ -502,7 +519,7 @@ class _TasksViewState extends State<TasksView> {
                   height: 5,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: kPrimaryColor,
+                    color: Theme.of(context).textTheme.displayLarge?.color,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -511,7 +528,7 @@ class _TasksViewState extends State<TasksView> {
               Text(
                 '${taskDetail.title} Details',
                 style: TextStyle(
-                  color: kPrimaryColor,
+                  color: Theme.of(context).textTheme.displayLarge?.color,
                   fontFamily: 'PoppinsSemiBold',
                   fontSize: 22,
                 ),
@@ -525,7 +542,7 @@ class _TasksViewState extends State<TasksView> {
                   margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
@@ -553,7 +570,7 @@ class _TasksViewState extends State<TasksView> {
                   width: double.infinity,
                   margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(

@@ -49,7 +49,7 @@ class _FakeApiViewState extends State<FakeApiView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBgColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: costumeAppBar(
           title: 'Fake Api List',
           leading: IconButton(
@@ -243,7 +243,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 margin: EdgeInsets.only(
                                     bottom: getScreenHeight(0.03)),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.primary,
                                   borderRadius: BorderRadius.circular(20),
                                   boxShadow: [
                                     BoxShadow(
@@ -270,7 +270,10 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             style: TextStyle(
                                               fontFamily: 'PoppinsSemiBold',
                                               fontSize: 14,
-                                              color: Colors.black,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .displayLarge
+                                                  ?.color,
                                             ),
                                           ),
                                         ),
@@ -279,7 +282,9 @@ class _FakeApiViewState extends State<FakeApiView> {
                                           height: 30,
                                           width: getScreenWidth(0.30),
                                           decoration: BoxDecoration(
-                                            color: Colors.grey,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                           ),
@@ -289,7 +294,10 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             style: TextStyle(
                                               fontFamily: 'PoppinsSemiBold',
                                               fontSize: 12,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .displayLarge
+                                                  ?.color,
                                             ),
                                           )),
                                         ),
@@ -310,7 +318,10 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             style: TextStyle(
                                               fontFamily: 'PoppinsSemiBold',
                                               fontSize: 14,
-                                              color: Colors.black,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .displayLarge
+                                                  ?.color,
                                             ),
                                           ),
                                         ),
@@ -319,7 +330,9 @@ class _FakeApiViewState extends State<FakeApiView> {
                                           height: 30,
                                           width: getScreenWidth(0.30),
                                           decoration: BoxDecoration(
-                                            color: Colors.grey,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                           ),
@@ -329,7 +342,10 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             style: TextStyle(
                                               fontFamily: 'PoppinsSemiBold',
                                               fontSize: 12,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .displayLarge
+                                                  ?.color,
                                             ),
                                           )),
                                         ),
@@ -365,7 +381,7 @@ class _FakeApiViewState extends State<FakeApiView> {
       context: context,
       builder: (context) {
         return Scaffold(
-          backgroundColor: kBgColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -375,7 +391,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                     height: 5,
                     width: 50,
                     decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: Theme.of(context).textTheme.displayLarge?.color,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -384,7 +400,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                 Text(
                   'Post Fake Api',
                   style: TextStyle(
-                    color: kPrimaryColor,
+                    color: Theme.of(context).textTheme.displayLarge?.color,
                     fontFamily: 'PoppinsSemiBold',
                     fontSize: 22,
                   ),
@@ -463,7 +479,15 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             CupertinoActionSheetAction(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('Cancel'),
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .displayLarge
+                                                  ?.color,
+                                            ),
+                                          ),
                                         ),
                                       );
                                     },
@@ -497,7 +521,15 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             CupertinoActionSheetAction(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('Cancel'),
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .displayLarge
+                                                  ?.color,
+                                            ),
+                                          ),
                                         ),
                                       );
                                     },
@@ -551,13 +583,19 @@ class _FakeApiViewState extends State<FakeApiView> {
                               Size(getScreenWidth(0.20), 55)),
                           maximumSize: MaterialStatePropertyAll(
                               Size(getScreenWidth(0.20), 55)),
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.white),
+                          backgroundColor: MaterialStatePropertyAll(
+                              Theme.of(context).colorScheme.secondary),
                           shape: MaterialStatePropertyAll(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
                         ),
-                        child: Text('Add'),
+                        child: Text(
+                          'Add',
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).textTheme.displayLarge?.color,
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -581,7 +619,7 @@ class _FakeApiViewState extends State<FakeApiView> {
       context: context,
       builder: (context) {
         return Scaffold(
-          backgroundColor: kBgColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -591,7 +629,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                     height: 5,
                     width: 50,
                     decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: Theme.of(context).textTheme.displayLarge?.color,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -600,7 +638,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                 Text(
                   'Put Fake Api',
                   style: TextStyle(
-                    color: kPrimaryColor,
+                    color: Theme.of(context).textTheme.displayLarge?.color,
                     fontFamily: 'PoppinsSemiBold',
                     fontSize: 22,
                   ),
@@ -679,7 +717,15 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             CupertinoActionSheetAction(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('Cancel'),
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .displayLarge
+                                                  ?.color,
+                                            ),
+                                          ),
                                         ),
                                       );
                                     },
@@ -713,7 +759,14 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             CupertinoActionSheetAction(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('Cancel'),
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .displayLarge
+                                                    ?.color),
+                                          ),
                                         ),
                                       );
                                     },
@@ -764,13 +817,20 @@ class _FakeApiViewState extends State<FakeApiView> {
                               Size(getScreenWidth(0.20), 55)),
                           maximumSize: MaterialStatePropertyAll(
                               Size(getScreenWidth(0.20), 55)),
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.white),
+                          backgroundColor: MaterialStatePropertyAll(
+                              Theme.of(context).colorScheme.secondary),
                           shape: MaterialStatePropertyAll(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
                         ),
-                        child: Text('Put'),
+                        child: Text(
+                          'Put',
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge
+                                  ?.color),
+                        ),
                       ),
                     );
                   },
@@ -829,7 +889,7 @@ class _FakeApiViewState extends State<FakeApiView> {
           onTap: () => Navigator.of(context).pop(true),
           child: CupertinoPicker(
             scrollController: FixedExtentScrollController(initialItem: 0),
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             itemExtent: 64,
             onSelectedItemChanged: (index) {
               setState(() {
@@ -844,7 +904,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                       item.toString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Theme.of(context).textTheme.displayLarge?.color,
                       ),
                     )))
                 .toList(),

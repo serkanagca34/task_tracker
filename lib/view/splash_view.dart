@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:task_tacker/constans/colors.dart';
 import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/view/home_view.dart';
 
@@ -34,11 +33,12 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: FadeTransition(
         opacity: _animation,
         child: Container(
           decoration: BoxDecoration(
-            color: kBgColor,
+            color: Theme.of(context).colorScheme.background,
           ),
           child: Center(
             child: Column(
@@ -48,7 +48,7 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
                   'Task Tracker',
                   style: TextStyle(
                     fontFamily: 'PoppinsSemiBold',
-                    color: Colors.black,
+                    color: Theme.of(context).textTheme.displayLarge!.color,
                     fontSize: 40,
                   ),
                 ),

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_tacker/components/costume_appbar.dart';
-import 'package:task_tacker/constans/colors.dart';
 import 'package:task_tacker/responsive/media_query.dart';
+import 'package:task_tacker/view_model/theme_cubit.dart';
 import 'package:task_tacker/view_model/weather/weather_cubit.dart';
 
 class WeatherView extends StatefulWidget {
@@ -16,8 +16,21 @@ class _WeatherViewState extends State<WeatherView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBgColor,
-      appBar: costumeAppBar(title: 'Weather'),
+      appBar: costumeAppBar(
+        title: 'Weather',
+        leading: IconButton(
+          onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+          icon: Icon(Icons.theater_comedy_outlined),
+          color: Colors.white,
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.language),
+            color: Colors.white,
+          ),
+        ],
+      ),
       body: Column(
         children: [
           BlocBuilder<WeatherCubit, WeatherState>(
@@ -37,7 +50,8 @@ class _WeatherViewState extends State<WeatherView> {
                         style: TextStyle(
                           fontFamily: 'PoppinsSemiBold',
                           fontSize: 25,
-                          color: kPrimaryColor,
+                          color:
+                              Theme.of(context).textTheme.displayLarge?.color,
                         ),
                       ),
                       SizedBox(height: getScreenHeight(0.01)),
@@ -47,7 +61,8 @@ class _WeatherViewState extends State<WeatherView> {
                         style: TextStyle(
                           fontFamily: 'PoppinsSemiBold',
                           fontSize: 18,
-                          color: kPrimaryColor,
+                          color:
+                              Theme.of(context).textTheme.displayLarge?.color,
                         ),
                       ),
                       SizedBox(height: getScreenHeight(0.01)),
@@ -63,13 +78,21 @@ class _WeatherViewState extends State<WeatherView> {
                             style: TextStyle(
                               fontFamily: 'PoppinsSemiBold',
                               fontSize: 40,
-                              color: kPrimaryColor,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge
+                                  ?.color,
                             ),
                           ),
                           Positioned(
                               right: -20,
                               child: SvgPicture.asset(
-                                  'assets/icons/temperature.svg')),
+                                'assets/icons/temperature.svg',
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .displayLarge
+                                    ?.color,
+                              )),
                         ],
                       ),
                       SizedBox(height: getScreenHeight(0.01)),
@@ -79,7 +102,8 @@ class _WeatherViewState extends State<WeatherView> {
                         style: TextStyle(
                           fontFamily: 'PoppinsSemiBold',
                           fontSize: 18,
-                          color: kPrimaryColor,
+                          color:
+                              Theme.of(context).textTheme.displayLarge?.color,
                         ),
                       ),
                       SizedBox(height: getScreenHeight(0.01)),
@@ -95,7 +119,10 @@ class _WeatherViewState extends State<WeatherView> {
                                 style: TextStyle(
                                   fontFamily: 'PoppinsSemiBold',
                                   fontSize: 18,
-                                  color: kPrimaryColor,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.color,
                                 ),
                               ),
                               Positioned(
@@ -103,6 +130,10 @@ class _WeatherViewState extends State<WeatherView> {
                                 child: SvgPicture.asset(
                                   'assets/icons/nodone.svg',
                                   height: 10,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.color,
                                 ),
                               )
                             ],
@@ -116,7 +147,10 @@ class _WeatherViewState extends State<WeatherView> {
                                 style: TextStyle(
                                   fontFamily: 'PoppinsSemiBold',
                                   fontSize: 18,
-                                  color: kPrimaryColor,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.color,
                                 ),
                               ),
                               Positioned(
@@ -124,6 +158,10 @@ class _WeatherViewState extends State<WeatherView> {
                                 child: SvgPicture.asset(
                                   'assets/icons/nodone.svg',
                                   height: 10,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.color,
                                 ),
                               )
                             ],

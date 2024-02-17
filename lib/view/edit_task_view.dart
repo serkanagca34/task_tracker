@@ -52,7 +52,7 @@ class _EditTaskViewState extends State<EditTaskView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kBgColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
@@ -60,7 +60,6 @@ class _EditTaskViewState extends State<EditTaskView> {
             color: Colors.white,
           ),
           elevation: 0,
-          backgroundColor: kPrimaryColor,
           centerTitle: true,
           title: Text(
             'Edit Task',
@@ -136,7 +135,14 @@ class _EditTaskViewState extends State<EditTaskView> {
                                 actions: [chooseDueDate()],
                                 cancelButton: CupertinoActionSheetAction(
                                   onPressed: () => Navigator.pop(context),
-                                  child: Text('Cancel'),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .displayLarge
+                                            ?.color),
+                                  ),
                                 ),
                               );
                             },
@@ -167,7 +173,14 @@ class _EditTaskViewState extends State<EditTaskView> {
                                 actions: [choosePriority()],
                                 cancelButton: CupertinoActionSheetAction(
                                   onPressed: () => Navigator.pop(context),
-                                  child: Text('Cancel'),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .displayLarge
+                                            ?.color),
+                                  ),
                                 ),
                               );
                             },
@@ -299,7 +312,7 @@ class _EditTaskViewState extends State<EditTaskView> {
           onTap: () => Navigator.of(context).pop(true),
           child: CupertinoPicker(
             scrollController: FixedExtentScrollController(initialItem: 0),
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             itemExtent: 64,
             onSelectedItemChanged: (index) {
               setState(() {
@@ -314,7 +327,7 @@ class _EditTaskViewState extends State<EditTaskView> {
                       item.toString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Theme.of(context).textTheme.displayLarge?.color,
                       ),
                     )))
                 .toList(),

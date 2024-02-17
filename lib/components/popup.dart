@@ -27,7 +27,7 @@ class Popups {
                   title,
                   style: TextStyle(
                       fontFamily: 'Poppins',
-                      color: Colors.black,
+                      color: Theme.of(context).textTheme.displayLarge?.color,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
@@ -36,7 +36,7 @@ class Popups {
                   message,
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    color: Colors.black,
+                    color: Theme.of(context).textTheme.displayLarge?.color,
                     fontSize: 15,
                   ),
                 ),

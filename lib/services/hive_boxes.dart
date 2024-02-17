@@ -1,9 +1,11 @@
 import 'package:hive/hive.dart';
 import 'package:task_tacker/model/task_model.dart';
+import 'package:task_tacker/model/theme_model.dart';
 
-late Box horizontalDesingChangeBox;
+late Box gridDesingChangeBox;
 
-void openBoxAll() async {
+Future<void> openBoxAll() async {
+  await Hive.openBox<ThemeModel>('theme');
   await Hive.openBox<TaskModel>('tasksBox');
-  horizontalDesingChangeBox = await Hive.openBox('horizontalDesingChangeBox');
+  gridDesingChangeBox = await Hive.openBox('gridDesingChangeBox');
 }
