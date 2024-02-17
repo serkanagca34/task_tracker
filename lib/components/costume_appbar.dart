@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:task_tacker/constans/colors.dart';
 
-AppBar costumeAppBar(
-    {required String title, List<Widget>? actions, bool? centerTitle}) {
+AppBar costumeAppBar({
+  required String title,
+  Widget? leading,
+  List<Widget>? actions,
+  bool? centerTitle,
+}) {
   return AppBar(
     elevation: 0,
     backgroundColor: kPrimaryColor,
@@ -16,6 +20,7 @@ AppBar costumeAppBar(
         color: Colors.white,
       ),
     ),
+    leading: leading,
     actions: actions,
   );
 }

@@ -11,6 +11,7 @@ import 'package:task_tacker/model/task_model.dart';
 import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/services/hive_boxes.dart';
 import 'package:task_tacker/view/edit_task_view.dart';
+import 'package:task_tacker/view/fake_api/fake_api_view.dart';
 import 'package:task_tacker/view_model/add_task/add_task_cubit.dart';
 
 class TasksView extends StatefulWidget {
@@ -33,32 +34,39 @@ class _TasksViewState extends State<TasksView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: costumeAppBar(title: 'Tasks', actions: [
-        BlocBuilder<AddTaskCubit, AddTaskState>(builder: (context, state) {
-          if (state is AddTaskLoaded) {
-            return state.tasks.isNotEmpty
-                ? IconButton(
-                    padding: EdgeInsets.only(right: getScreenWidth(0.05)),
-                    constraints: BoxConstraints(),
-                    onPressed: () async {
-                      await horizontalDesingChangeBox.put(
-                          'horizontalDesingChangeBox',
-                          !horizontalDesingChange!);
-                      setState(() {
-                        horizontalDesingChange = !horizontalDesingChange!;
-                      });
-                    },
-                    icon: horizontalDesingChangeBox.get(
-                            'horizontalDesingChangeBox',
-                            defaultValue: false)
-                        ? SvgPicture.asset('assets/icons/changeDesing.svg')
-                        : SvgPicture.asset('assets/icons/grid-svgrepo-com.svg'),
-                  )
-                : SizedBox.shrink();
-          }
-          return SizedBox.shrink();
-        })
-      ]),
+      appBar: costumeAppBar(
+          title: 'Tasks',
+          leading: IconButton(
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => FakeApiView())),
+              icon: Icon(Icons.pages_outlined, color: Colors.white, size: 30)),
+          actions: [
+            BlocBuilder<AddTaskCubit, AddTaskState>(builder: (context, state) {
+              if (state is AddTaskLoaded) {
+                return state.tasks.isNotEmpty
+                    ? IconButton(
+                        padding: EdgeInsets.only(right: getScreenWidth(0.05)),
+                        constraints: BoxConstraints(),
+                        onPressed: () async {
+                          await horizontalDesingChangeBox.put(
+                              'horizontalDesingChangeBox',
+                              !horizontalDesingChange!);
+                          setState(() {
+                            horizontalDesingChange = !horizontalDesingChange!;
+                          });
+                        },
+                        icon: horizontalDesingChangeBox.get(
+                                'horizontalDesingChangeBox',
+                                defaultValue: false)
+                            ? SvgPicture.asset('assets/icons/changeDesing.svg')
+                            : SvgPicture.asset(
+                                'assets/icons/grid-svgrepo-com.svg'),
+                      )
+                    : SizedBox.shrink();
+              }
+              return SizedBox.shrink();
+            })
+          ]),
       body: Stack(
         children: [
           horizontalDesingChangeBox.get('horizontalDesingChangeBox',

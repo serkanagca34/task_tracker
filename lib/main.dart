@@ -7,6 +7,7 @@ import 'package:task_tacker/services/hive_boxes.dart';
 import 'package:task_tacker/services/service_locator.dart';
 import 'package:task_tacker/view/splash_view.dart';
 import 'package:task_tacker/view_model/add_task/add_task_cubit.dart';
+import 'package:task_tacker/view_model/fake_api/fake_api_cubit.dart';
 import 'package:task_tacker/view_model/weather/weather_cubit.dart';
 
 void main() async {
@@ -31,6 +32,9 @@ class TaskTracker extends StatelessWidget {
         ),
         BlocProvider<WeatherCubit>(
           create: (context) => locator<WeatherCubit>(),
+        ),
+        BlocProvider<FakeApiCubit>(
+          create: (context) => locator<FakeApiCubit>(),
         ),
       ],
       child: MaterialApp(

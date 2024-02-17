@@ -46,7 +46,7 @@ class _AddTaskViewState extends State<AddTaskView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: kBgColor,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: kPrimaryColor,
