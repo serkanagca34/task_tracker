@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +27,9 @@ class _EditTaskViewState extends State<EditTaskView> {
   TextEditingController _dueDateController = TextEditingController();
   TextEditingController _priorityLevelsController = TextEditingController();
 
-  List<String> _priorityLevels = ['Low', 'Medium', 'High'];
+  List<String> get _priorityLevels {
+    return ['priority_low'.tr(), 'priority_medium'.tr(), 'priority_high'.tr()];
+  }
 
   @override
   void initState() {
@@ -62,7 +65,7 @@ class _EditTaskViewState extends State<EditTaskView> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            'Edit Task',
+            'edit_task_form_title'.tr(),
             style: TextStyle(
               fontFamily: 'PoppinsBold',
               fontSize: 18,
@@ -87,13 +90,13 @@ class _EditTaskViewState extends State<EditTaskView> {
                         textInputAction: TextInputAction.done,
                         inputFormatters: [LengthLimitingTextInputFormatter(30)],
                         decoration: inputDecoration(
-                          hintText: "Enter Title",
-                          label: Text("Title"),
+                          hintText: "form_title_hint".tr(),
+                          label: Text("form_title".tr()),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Title is Required';
+                            return 'form_title_error'.tr();
                           } else if (value.length < 3) {
                             return 'Title must be at least 3 characters';
                           }
@@ -106,12 +109,12 @@ class _EditTaskViewState extends State<EditTaskView> {
                         controller: _descriptionController,
                         textInputAction: TextInputAction.done,
                         decoration: inputDecoration(
-                            hintText: "Enter Description",
-                            label: Text("Description")),
+                            hintText: "form_description_hint".tr(),
+                            label: Text("form_description".tr())),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Description is Required';
+                            return 'form_description_error'.tr();
                           }
                           return null;
                         },
@@ -124,8 +127,8 @@ class _EditTaskViewState extends State<EditTaskView> {
                         keyboardType: TextInputType.none,
                         readOnly: true,
                         decoration: inputDecoration(
-                          hintText: 'Enter Due Date',
-                          label: Text("Due Date"),
+                          hintText: 'form_duedate_hint'.tr(),
+                          label: Text("form_duedate".tr()),
                         ),
                         onTap: () {
                           showCupertinoModalPopup(
@@ -150,7 +153,7 @@ class _EditTaskViewState extends State<EditTaskView> {
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Due Date is Required';
+                            return 'form_duedate_error'.tr();
                           }
                           return null;
                         },
@@ -163,8 +166,8 @@ class _EditTaskViewState extends State<EditTaskView> {
                         keyboardType: TextInputType.none,
                         readOnly: true,
                         decoration: inputDecoration(
-                            hintText: "Enter Priority Level",
-                            label: Text("Priority Level")),
+                            hintText: "form_priority_hint".tr(),
+                            label: Text("form_priority".tr())),
                         onTap: () {
                           showCupertinoModalPopup(
                             context: context,
@@ -188,7 +191,7 @@ class _EditTaskViewState extends State<EditTaskView> {
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Priority is Required';
+                            return 'form_priority_error'.tr();
                           }
                           return null;
                         },
@@ -199,7 +202,7 @@ class _EditTaskViewState extends State<EditTaskView> {
                         listener: (context, state) {
                           if (state is AddTaskLoaded) {
                             SnackBar snackBar = SnackBar(
-                              content: const Text('Task Edited',
+                              content: Text('task_edited'.tr(),
                                   style: TextStyle(fontSize: 20)),
                               backgroundColor: Colors.green,
                               dismissDirection: DismissDirection.up,
@@ -268,7 +271,7 @@ class _EditTaskViewState extends State<EditTaskView> {
                                     borderRadius: BorderRadius.circular(10))),
                           ),
                           child: Text(
-                            'Edit',
+                            'edit_task_form_button_text'.tr(),
                             style: TextStyle(
                               color: Colors.white,
                             ),

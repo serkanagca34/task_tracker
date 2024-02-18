@@ -6,6 +6,7 @@ late Box gridDesingChangeBox;
 
 Future<void> openBoxAll() async {
   await Hive.openBox<ThemeModel>('theme');
+  await Hive.openBox<String>('settings');
   await Hive.openBox<TaskModel>('tasksBox');
   gridDesingChangeBox = await Hive.openBox('gridDesingChangeBox');
 }

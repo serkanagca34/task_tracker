@@ -1,0 +1,75 @@
+{
+    "splash_title": "Görev İzleyici",
+    "no_task": "Görev Yok",
+    
+    "_comment1": "Form Texts",
+    "add_task_form_title": "Görev Ekleme",
+    "add_task_form_button_text": "Ekle",
+    "edit_task_form_title": "Görev Düzenleme",
+    "edit_task_form_button_text": "Düzenle",
+
+    "add_fake_form_title": "Sahte Api Kayıt Ekleme",
+    "add_fake_form_button_text": "Ekle",
+    "edit_fake_form_title": "Sahte Api Kayıt Düzenleme",
+    "edit_fake_form_button_text": "Düzenle",
+
+    "_comment2": "Form Inputs Titles",
+    "form_title": "Başlık",
+    "form_description": "Açıklama",
+    "form_duedate": "Bitiş Tarihi",
+    "form_priority": "Öncelik Seviyesi",
+
+    "_comment3": "Form Inputs Hint Titles",
+    "form_title_hint": "Başlık Giriniz",
+    "form_description_hint": "Açıklama Giriniz",
+    "form_duedate_hint": "Bitiş Tarihi Seçiniz",
+    "form_priority_hint": "Öncelik Seviyesi Seçiniz",
+
+    "_comment4": "Form Error Messages",
+    "form_title_error": "Başlık Zorunlu",
+    "form_description_error": "Açıklama Zorunlu",
+    "form_duedate_error": "Bitiş Tarihi Zorunlu",
+    "form_priority_error": "Öncelik Seviyesi Zorunlu",
+
+    "_comment5": "List Texts",
+    "get_task_form_title": "Görev Listesi",
+    "get_fake_form_title": "Sahte Api Kayıtları",
+
+    "_comment6": "Priority Levels",
+     "priority_low": "Düşük",
+     "priority_medium": "Orta",
+     "priority_high": "Yüksek",
+
+     "_comment7": "Task Detail",
+     "task_detail_title": "Görev Detayı",
+     "task_detail_edit_button": "Düzenle",
+     "task_detail_delete_button": "Sil",
+
+     "_comment8": "Popups",
+     "task_delete_popup_title": "Görevi Sil",
+     "task_delete_popup_message": "Görevi silmek istediğinizden emin misiniz ?",
+     "task_delete_popup_no_button": "Hayır",
+     "task_delete_popup_yes_button": "Evet",
+
+     "fake_delete_popup_title": "Kaydı Sil",
+     "fake_delete_popup_message": "Kaydı silmek istediğinizden emin misiniz ?",
+     "fake_delete_popup_no_button": "Hayır",
+     "fake_delete_popup_yes_button": "Evet",
+
+     "_comment9": "Success Message",
+     "task_added": "Görev Eklendi",
+     "task_edited": "Görev Düzenlendi",
+     "fake_added": "Sahte Api Eklendi",
+     "fake_edited": "Sahte Api Düzenlendi",
+
+     "_comment10": "Weather",
+     "weather_page_title": "Hava Durumu",
+     "weather_my_location": "Konumum",
+     "highest": "Y",
+     "lowest": "D"
+     
+      
+
+    
+
+}

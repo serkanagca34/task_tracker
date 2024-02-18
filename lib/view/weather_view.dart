@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_tacker/components/costume_appbar.dart';
 import 'package:task_tacker/responsive/media_query.dart';
+import 'package:task_tacker/view_model/language_cubit.dart';
 import 'package:task_tacker/view_model/theme_cubit.dart';
 import 'package:task_tacker/view_model/weather/weather_cubit.dart';
 
@@ -17,7 +19,7 @@ class _WeatherViewState extends State<WeatherView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: costumeAppBar(
-        title: 'Weather',
+        title: 'weather_page_title'.tr(),
         leading: IconButton(
           onPressed: () => context.read<ThemeCubit>().toggleTheme(),
           icon: Icon(Icons.theater_comedy_outlined),
@@ -25,7 +27,10 @@ class _WeatherViewState extends State<WeatherView> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<LanguageCubit>().toggleLanguage();
+              setState(() {});
+            },
             icon: Icon(Icons.language),
             color: Colors.white,
           ),
@@ -46,7 +51,7 @@ class _WeatherViewState extends State<WeatherView> {
                       SizedBox(height: getScreenHeight(0.10)),
                       // Title
                       Text(
-                        'My Location',
+                        'weather_my_location'.tr(),
                         style: TextStyle(
                           fontFamily: 'PoppinsSemiBold',
                           fontSize: 25,
@@ -115,7 +120,8 @@ class _WeatherViewState extends State<WeatherView> {
                             clipBehavior: Clip.none,
                             children: [
                               Text(
-                                'H:${convertKelvinToCelsius(state.weatherData.main!.tempMax!).toInt().toString()}',
+                                'highest'.tr() +
+                                    ': ${convertKelvinToCelsius(state.weatherData.main!.tempMax!).toInt().toString()}',
                                 style: TextStyle(
                                   fontFamily: 'PoppinsSemiBold',
                                   fontSize: 18,
@@ -143,7 +149,8 @@ class _WeatherViewState extends State<WeatherView> {
                             clipBehavior: Clip.none,
                             children: [
                               Text(
-                                'L:${convertKelvinToCelsius(state.weatherData.main!.tempMin!).toInt().toString()}',
+                                'lowest'.tr() +
+                                    ': ${convertKelvinToCelsius(state.weatherData.main!.tempMin!).toInt().toString()}',
                                 style: TextStyle(
                                   fontFamily: 'PoppinsSemiBold',
                                   fontSize: 18,
@@ -180,7 +187,7 @@ class _WeatherViewState extends State<WeatherView> {
     );
   }
 
-  double convertKelvinToCelsius(double kelvin) {
+  dynamic convertKelvinToCelsius(dynamic kelvin) {
     return kelvin - 273.15;
   }
 }

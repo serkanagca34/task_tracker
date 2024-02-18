@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +24,9 @@ class _AddTaskViewState extends State<AddTaskView> {
 
   AutovalidateMode _autovalidateMode = AutovalidateMode.onUserInteraction;
 
-  List<String> _priorityLevels = ['Low', 'Medium', 'High'];
+  List<String> get _priorityLevels {
+    return ['priority_low'.tr(), 'priority_medium'.tr(), 'priority_high'.tr()];
+  }
 
   @override
   void initState() {
@@ -52,7 +55,7 @@ class _AddTaskViewState extends State<AddTaskView> {
           centerTitle: false,
           titleSpacing: getScreenWidth(0.05),
           title: Text(
-            'Add Task',
+            'add_task_form_title'.tr(),
             style: TextStyle(
               fontFamily: 'PoppinsBold',
               fontSize: 18,
@@ -65,7 +68,7 @@ class _AddTaskViewState extends State<AddTaskView> {
               listener: (context, state) {
                 if (state is AddTaskLoaded) {
                   clearForm();
-                  Popups().successPopup(context, 'Task Added');
+                  Popups().successPopup(context, 'task_added'.tr());
                 }
               },
               builder: (context, state) {
@@ -97,7 +100,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                           borderRadius: BorderRadius.circular(10))),
                     ),
                     child: Text(
-                      'Add',
+                      'add_task_form_button_text'.tr(),
                       style: TextStyle(
                           color:
                               Theme.of(context).textTheme.displayLarge!.color),
@@ -125,13 +128,13 @@ class _AddTaskViewState extends State<AddTaskView> {
                         autovalidateMode: _autovalidateMode,
                         inputFormatters: [LengthLimitingTextInputFormatter(30)],
                         decoration: inputDecoration(
-                          hintText: "Enter Title",
-                          label: Text("Title"),
+                          hintText: "form_title_hint".tr(),
+                          label: Text("form_title".tr()),
                         ),
                         onChanged: (value) => onFieldInteraction(),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Title is Required';
+                            return 'form_title_error'.tr();
                           } else if (value.length < 3) {
                             return 'Title must be at least 3 characters';
                           }
@@ -145,12 +148,12 @@ class _AddTaskViewState extends State<AddTaskView> {
                         textInputAction: TextInputAction.done,
                         autovalidateMode: _autovalidateMode,
                         decoration: inputDecoration(
-                            hintText: "Enter Description",
-                            label: Text("Description")),
+                            hintText: "form_description_hint".tr(),
+                            label: Text("form_description".tr())),
                         onChanged: (value) => onFieldInteraction(),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Description is Required';
+                            return 'form_description_error'.tr();
                           }
                           return null;
                         },
@@ -163,8 +166,8 @@ class _AddTaskViewState extends State<AddTaskView> {
                         keyboardType: TextInputType.none,
                         readOnly: true,
                         decoration: inputDecoration(
-                          hintText: 'Enter Due Date',
-                          label: Text("Due Date"),
+                          hintText: 'form_duedate_hint'.tr(),
+                          label: Text("form_duedate".tr()),
                         ),
                         onChanged: (value) => onFieldInteraction(),
                         onTap: () {
@@ -191,7 +194,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Due Date is Required';
+                            return 'form_duedate_error'.tr();
                           }
                           return null;
                         },
@@ -204,8 +207,8 @@ class _AddTaskViewState extends State<AddTaskView> {
                         autovalidateMode: _autovalidateMode,
                         readOnly: true,
                         decoration: inputDecoration(
-                            hintText: "Enter Priority Level",
-                            label: Text("Priority Level")),
+                            hintText: "form_priority_hint".tr(),
+                            label: Text("form_priority".tr())),
                         onChanged: (value) => onFieldInteraction(),
                         onTap: () {
                           showCupertinoModalPopup(
@@ -231,7 +234,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Priority is Required';
+                            return 'form_priority_error'.tr();
                           }
                           return null;
                         },

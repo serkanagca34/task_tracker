@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/view/home_view.dart';
@@ -45,7 +46,7 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Task Tracker',
+                  'splash_title'.tr(),
                   style: TextStyle(
                     fontFamily: 'PoppinsSemiBold',
                     color: Theme.of(context).textTheme.displayLarge!.color,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_tacker/constans/colors.dart';
@@ -55,7 +56,7 @@ class Popups {
                         ),
                         child: Center(
                           child: Text(
-                            "No",
+                            "task_delete_popup_no_button".tr(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 17,
@@ -76,7 +77,7 @@ class Popups {
                         ),
                         child: Center(
                           child: Text(
-                            "Yes",
+                            "task_delete_popup_yes_button".tr(),
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

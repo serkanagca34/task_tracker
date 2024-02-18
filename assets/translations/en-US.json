@@ -1,0 +1,75 @@
+{
+    "splash_title": "Task Tracker",
+    "no_task": "No Task",
+    
+    "_comment1": "Form Texts",
+    "add_task_form_title": "Add Task",
+    "add_task_form_button_text": "Add",
+    "edit_task_form_title": "Edit Task",
+    "edit_task_form_button_text": "Edit",
+
+    "add_fake_form_title": "Post Fake Api",
+    "add_fake_form_button_text": "Post",
+    "edit_fake_form_title": "Put Fake Api",
+    "edit_fake_form_button_text": "Put",
+
+    "_comment2": "Form Inputs Titles",
+    "form_title": "Title",
+    "form_description": "Description",
+    "form_duedate": "Due Date",
+    "form_priority": "Priority Level",
+
+    "_comment3": "Form Inputs Hint Titles",
+    "form_title_hint": "Enter Title",
+    "form_description_hint": "Enter Description",
+    "form_duedate_hint": "Enter Due Date",
+    "form_priority_hint": "Enter Priority Level",
+
+    "_comment4": "Form Error Messages",
+    "form_title_error": "Title is Required",
+    "form_description_error": "Description is Required",
+    "form_duedate_error": "Due Date is Required",
+    "form_priority_error": "Priority Level is Required",
+
+    "_comment5": "List Texts",
+    "get_task_form_title": "Tasks",
+    "get_fake_form_title": "Fake Api List",
+
+    "_comment6": "Priority Levels",
+     "priority_low": "Low",
+     "priority_medium": "Medium",
+     "priority_high": "High",
+
+     "_comment7": "Task Detail",
+     "task_detail_title": "Details",
+     "task_detail_edit_button": "Edit Task",
+     "task_detail_delete_button": "Delete Task",
+
+     "_comment8": "Popups",
+     "task_delete_popup_title": "Delete Task",
+     "task_delete_popup_message": "Are you sure you want to delete the task ?",
+     "task_delete_popup_no_button": "No",
+     "task_delete_popup_yes_button": "Yes",
+     
+     "fake_delete_popup_title": "Delete Record",
+     "fake_delete_popup_message": "Are you sure you want to delete the record ?",
+     "fake_delete_popup_no_button": "No",
+     "fake_delete_popup_yes_button": "Yes",
+
+     "_comment9": "Success Message",
+     "task_added": "Task Added",
+     "task_edited": "Task Edited",
+     "fake_added": "Fake Api Posted",
+     "fake_edited": "Fake Api Putted",
+
+     "_comment10": "Weather",
+     "weather_page_title": "Weather",
+     "weather_my_location": "My Location",
+     "highest": "H",
+     "lowest": "L"
+     
+      
+
+    
+
+}

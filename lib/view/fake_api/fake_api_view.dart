@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +27,9 @@ class _FakeApiViewState extends State<FakeApiView> {
 
   AutovalidateMode _autovalidateMode = AutovalidateMode.onUserInteraction;
 
-  List<String> _priorityLevels = ['Low', 'Medium', 'High'];
+  List<String> get _priorityLevels {
+    return ['priority_low'.tr(), 'priority_medium'.tr(), 'priority_high'.tr()];
+  }
 
   @override
   void initState() {
@@ -51,7 +54,7 @@ class _FakeApiViewState extends State<FakeApiView> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: costumeAppBar(
-          title: 'Fake Api List',
+          title: 'get_fake_form_title'.tr(),
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: Icon(
@@ -162,9 +165,10 @@ class _FakeApiViewState extends State<FakeApiView> {
                                     child: InkWell(
                                       onTap: () {
                                         Popups().QuestionDangerPopup(context,
-                                            title: 'Delete Record',
-                                            message:
-                                                'Are you sure you want to delete the record ?',
+                                            title:
+                                                'fake_delete_popup_title'.tr(),
+                                            message: 'fake_delete_popup_message'
+                                                .tr(),
                                             onTopYes: () {
                                               if (items.id != null) {
                                                 context
@@ -398,7 +402,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                 ),
                 SizedBox(height: getScreenHeight(0.03)),
                 Text(
-                  'Post Fake Api',
+                  'add_fake_form_title'.tr(),
                   style: TextStyle(
                     color: Theme.of(context).textTheme.displayLarge?.color,
                     fontFamily: 'PoppinsSemiBold',
@@ -427,13 +431,13 @@ class _FakeApiViewState extends State<FakeApiView> {
                                   LengthLimitingTextInputFormatter(30)
                                 ],
                                 decoration: inputDecoration(
-                                  hintText: "Enter Title",
-                                  label: Text("Title"),
+                                  hintText: "form_title_hint".tr(),
+                                  label: Text("form_title".tr()),
                                 ),
                                 onChanged: (value) => onFieldInteraction(),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Title is Required';
+                                    return 'form_title_error'.tr();
                                   } else if (value.length < 3) {
                                     return 'Title must be at least 3 characters';
                                   }
@@ -447,12 +451,12 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 textInputAction: TextInputAction.done,
                                 autovalidateMode: _autovalidateMode,
                                 decoration: inputDecoration(
-                                    hintText: "Enter Description",
-                                    label: Text("Description")),
+                                    hintText: "form_description_hint".tr(),
+                                    label: Text("form_description".tr())),
                                 onChanged: (value) => onFieldInteraction(),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Description is Required';
+                                    return 'form_description_error'.tr();
                                   }
                                   return null;
                                 },
@@ -465,8 +469,8 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 keyboardType: TextInputType.none,
                                 readOnly: true,
                                 decoration: inputDecoration(
-                                  hintText: 'Enter Due Date',
-                                  label: Text("Due Date"),
+                                  hintText: 'form_duedate_hint'.tr(),
+                                  label: Text("form_duedate".tr()),
                                 ),
                                 onChanged: (value) => onFieldInteraction(),
                                 onTap: () {
@@ -495,7 +499,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 },
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Due Date is Required';
+                                    return 'form_duedate_error'.tr();
                                   }
                                   return null;
                                 },
@@ -508,8 +512,8 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 autovalidateMode: _autovalidateMode,
                                 readOnly: true,
                                 decoration: inputDecoration(
-                                    hintText: "Enter Priority Level",
-                                    label: Text("Priority Level")),
+                                    hintText: "form_priority_hint".tr(),
+                                    label: Text("form_priority".tr())),
                                 onChanged: (value) => onFieldInteraction(),
                                 onTap: () {
                                   showCupertinoModalPopup(
@@ -537,7 +541,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 },
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Priority is Required';
+                                    return 'form_priority'.tr();
                                   }
                                   return null;
                                 },
@@ -555,7 +559,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                   listener: (context, state) {
                     if (state is FakeApiSuccess) {
                       clearForm();
-                      Popups().successPopup(context, 'Fake Api Posted');
+                      Popups().successPopup(context, 'fake_added'.tr());
                       Future.delayed(Duration())
                           .then((value) => Navigator.pop(context));
                     }
@@ -590,7 +594,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                   borderRadius: BorderRadius.circular(10))),
                         ),
                         child: Text(
-                          'Add',
+                          'add_fake_form_button_text'.tr(),
                           style: TextStyle(
                             color:
                                 Theme.of(context).textTheme.displayLarge?.color,
@@ -636,7 +640,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                 ),
                 SizedBox(height: getScreenHeight(0.03)),
                 Text(
-                  'Put Fake Api',
+                  'edit_fake_form_title'.tr(),
                   style: TextStyle(
                     color: Theme.of(context).textTheme.displayLarge?.color,
                     fontFamily: 'PoppinsSemiBold',
@@ -665,13 +669,13 @@ class _FakeApiViewState extends State<FakeApiView> {
                                   LengthLimitingTextInputFormatter(30)
                                 ],
                                 decoration: inputDecoration(
-                                  hintText: "Enter Title",
-                                  label: Text("Title"),
+                                  hintText: "form_title_hint".tr(),
+                                  label: Text("form_title".tr()),
                                 ),
                                 onChanged: (value) => onFieldInteraction(),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Title is Required';
+                                    return 'form_title_error'.tr();
                                   } else if (value.length < 3) {
                                     return 'Title must be at least 3 characters';
                                   }
@@ -685,12 +689,12 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 textInputAction: TextInputAction.done,
                                 autovalidateMode: _autovalidateMode,
                                 decoration: inputDecoration(
-                                    hintText: "Enter Description",
-                                    label: Text("Description")),
+                                    hintText: "form_description_hint".tr(),
+                                    label: Text("form_description".tr())),
                                 onChanged: (value) => onFieldInteraction(),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Description is Required';
+                                    return 'form_description_error'.tr();
                                   }
                                   return null;
                                 },
@@ -703,8 +707,8 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 keyboardType: TextInputType.none,
                                 readOnly: true,
                                 decoration: inputDecoration(
-                                  hintText: 'Enter Due Date',
-                                  label: Text("Due Date"),
+                                  hintText: 'form_duedate_hint'.tr(),
+                                  label: Text("form_duedate".tr()),
                                 ),
                                 onChanged: (value) => onFieldInteraction(),
                                 onTap: () {
@@ -733,7 +737,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 },
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Due Date is Required';
+                                    return 'form_duedate_error'.tr();
                                   }
                                   return null;
                                 },
@@ -746,8 +750,8 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 autovalidateMode: _autovalidateMode,
                                 readOnly: true,
                                 decoration: inputDecoration(
-                                    hintText: "Enter Priority Level",
-                                    label: Text("Priority Level")),
+                                    hintText: "form_priority_hint".tr(),
+                                    label: Text("form_priority".tr())),
                                 onChanged: (value) => onFieldInteraction(),
                                 onTap: () {
                                   showCupertinoModalPopup(
@@ -774,7 +778,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                 },
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Priority is Required';
+                                    return 'form_priority_error'.tr();
                                   }
                                   return null;
                                 },
@@ -792,7 +796,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                   listener: (context, state) {
                     if (state is FakeApiSuccess) {
                       clearForm();
-                      Popups().successPopup(context, 'Fake Api Putted');
+                      Popups().successPopup(context, 'fake_edited'.tr());
                       Future.delayed(Duration())
                           .then((value) => Navigator.pop(context));
                     }
@@ -814,9 +818,9 @@ class _FakeApiViewState extends State<FakeApiView> {
                         },
                         style: ButtonStyle(
                           minimumSize: MaterialStatePropertyAll(
-                              Size(getScreenWidth(0.20), 55)),
+                              Size(getScreenWidth(0.25), 55)),
                           maximumSize: MaterialStatePropertyAll(
-                              Size(getScreenWidth(0.20), 55)),
+                              Size(getScreenWidth(0.25), 55)),
                           backgroundColor: MaterialStatePropertyAll(
                               Theme.of(context).colorScheme.secondary),
                           shape: MaterialStatePropertyAll(
@@ -824,7 +828,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                   borderRadius: BorderRadius.circular(10))),
                         ),
                         child: Text(
-                          'Put',
+                          'edit_fake_form_button_text'.tr(),
                           style: TextStyle(
                               color: Theme.of(context)
                                   .textTheme

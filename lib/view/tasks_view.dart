@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -33,7 +34,7 @@ class _TasksViewState extends State<TasksView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: costumeAppBar(
-          title: 'Tasks',
+          title: 'get_task_form_title'.tr(),
           leading: IconButton(
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => FakeApiView())),
@@ -91,15 +92,15 @@ class _TasksViewState extends State<TasksView> {
                           Color? _priorityBoxColor = Colors.grey;
 
                           switch (tasks.priorityLevels) {
-                            case 'Low':
+                            case 'Low' || 'Düşük':
                               _priorityBoxColor = Colors.green;
                               break;
 
-                            case 'Medium':
+                            case 'Medium' || 'Orta':
                               _priorityBoxColor = Colors.orange;
                               break;
 
-                            case 'High':
+                            case 'High' || 'Yüksek':
                               _priorityBoxColor = Colors.red;
                               break;
                             default:
@@ -175,9 +176,12 @@ class _TasksViewState extends State<TasksView> {
                                             onTap: () {
                                               Popups().QuestionDangerPopup(
                                                   context,
-                                                  title: 'Delete Task',
+                                                  title:
+                                                      'task_delete_popup_title'
+                                                          .tr(),
                                                   message:
-                                                      'Are you sure you want to delete the task ?',
+                                                      'task_delete_popup_message'
+                                                          .tr(),
                                                   onTopYes: () {
                                                     if (tasks.key != null) {
                                                       context
@@ -345,15 +349,15 @@ class _TasksViewState extends State<TasksView> {
                           Color _priorityBoxColor = Colors.grey;
 
                           switch (tasks.priorityLevels) {
-                            case 'Low':
+                            case 'Low' || 'Düşük':
                               _priorityBoxColor = Colors.green;
                               break;
 
-                            case 'Medium':
+                            case 'Medium' || 'Orta':
                               _priorityBoxColor = Colors.orange;
                               break;
 
-                            case 'High':
+                            case 'High' || 'Yüksek':
                               _priorityBoxColor = Colors.red;
                               break;
                             default:
@@ -446,9 +450,11 @@ class _TasksViewState extends State<TasksView> {
                                           onTap: () {
                                             Popups().QuestionDangerPopup(
                                                 context,
-                                                title: 'Delete Task',
+                                                title: 'task_delete_popup_title'
+                                                    .tr(),
                                                 message:
-                                                    'Are you sure you want to delete the task ?',
+                                                    'task_delete_popup_message'
+                                                        .tr(),
                                                 onTopYes: () {
                                                   if (tasks.key != null) {
                                                     context
@@ -526,7 +532,7 @@ class _TasksViewState extends State<TasksView> {
               ),
               SizedBox(height: getScreenHeight(0.03)),
               Text(
-                '${taskDetail.title} Details',
+                'task_detail_title'.tr(),
                 style: TextStyle(
                   color: Theme.of(context).textTheme.displayLarge?.color,
                   fontFamily: 'PoppinsSemiBold',
@@ -556,7 +562,7 @@ class _TasksViewState extends State<TasksView> {
                     children: [
                       Icon(Icons.description),
                       SizedBox(height: getScreenHeight(0.02)),
-                      Text('Description', style: titleTextStyle),
+                      Text('form_description'.tr(), style: titleTextStyle),
                       SizedBox(height: getScreenHeight(0.02)),
                       Text(taskDetail.description, style: dataDetailTextStyle),
                     ],
@@ -583,7 +589,7 @@ class _TasksViewState extends State<TasksView> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Icon(Icons.calendar_month),
-                      Text('Due Date', style: titleTextStyle),
+                      Text('form_duedate'.tr(), style: titleTextStyle),
                       Text(taskDetail.dueDate, style: dataDetailTextStyle),
                     ],
                   ),
@@ -618,7 +624,7 @@ class _TasksViewState extends State<TasksView> {
                           ),
                           child: Center(
                             child: Text(
-                              'Edit Task',
+                              'task_detail_edit_button'.tr(),
                               style: TextStyle(
                                 color: Colors.orange,
                                 fontFamily: 'PoppinsSemiBold',
@@ -635,9 +641,8 @@ class _TasksViewState extends State<TasksView> {
                     child: GestureDetector(
                       onTap: () {
                         Popups().QuestionDangerPopup(context,
-                            title: 'Delete Task',
-                            message:
-                                'Are you sure you want to delete the task ?',
+                            title: 'task_delete_popup_title'.tr(),
+                            message: 'task_delete_popup_message'.tr(),
                             onTopYes: () {
                               if (taskDetail.key != null) {
                                 context
@@ -668,7 +673,7 @@ class _TasksViewState extends State<TasksView> {
                           ),
                           child: Center(
                             child: Text(
-                              'Delete Task',
+                              'task_detail_delete_button'.tr(),
                               style: TextStyle(
                                 color: Colors.red,
                                 fontFamily: 'PoppinsSemiBold',
@@ -698,7 +703,7 @@ class _TasksViewState extends State<TasksView> {
           Lottie.asset('assets/lottie/7.json',
               repeat: true, height: getScreenHeight(0.3)),
           Text(
-            'No Task',
+            'no_task'.tr(),
             style: TextStyle(
               fontFamily: 'PoppinsSemiBold',
               fontSize: 12,

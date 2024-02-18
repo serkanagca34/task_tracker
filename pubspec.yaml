@@ -55,6 +55,8 @@ dependencies:
   # Location
   geolocator: ^11.0.0
   geocoding: ^2.1.1
+  # Language
+  easy_localization: ^3.0.4
 
   
 
@@ -90,6 +92,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/lottie/
+    - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
