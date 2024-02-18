@@ -66,7 +66,9 @@
      "weather_page_title": "Weather",
      "weather_my_location": "My Location",
      "highest": "H",
-     "lowest": "L"
+     "lowest": "L",
+
+     "task_completed": "I completed the task"
      
       
 

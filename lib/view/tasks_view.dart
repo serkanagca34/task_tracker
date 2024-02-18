@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -258,13 +260,21 @@ class _TasksViewState extends State<TasksView> {
                                       child: Row(
                                         children: [
                                           SizedBox(width: getScreenWidth(0.05)),
-                                          SvgPicture.asset(
-                                            'assets/icons/nodone.svg',
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .displayLarge
-                                                ?.color,
-                                          ),
+                                          tasks.isCompleted
+                                              ? SvgPicture.asset(
+                                                  'assets/icons/done.svg',
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .displayLarge
+                                                      ?.color,
+                                                )
+                                              : SvgPicture.asset(
+                                                  'assets/icons/nodone.svg',
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .displayLarge
+                                                      ?.color,
+                                                ),
                                           SizedBox(width: getScreenWidth(0.05)),
                                           // Title
                                           Expanded(
@@ -400,13 +410,21 @@ class _TasksViewState extends State<TasksView> {
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             // Title
-                                            SvgPicture.asset(
-                                              'assets/icons/nodone.svg',
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .displayLarge
-                                                  ?.color,
-                                            ),
+                                            tasks.isCompleted
+                                                ? SvgPicture.asset(
+                                                    'assets/icons/done.svg',
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .displayLarge
+                                                        ?.color,
+                                                  )
+                                                : SvgPicture.asset(
+                                                    'assets/icons/nodone.svg',
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .displayLarge
+                                                        ?.color,
+                                                  ),
                                             Text(
                                               tasks.title,
                                               overflow: TextOverflow.ellipsis,
@@ -515,184 +533,204 @@ class _TasksViewState extends State<TasksView> {
       ),
       context: context,
       builder: (context) {
-        return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: Column(
-            children: [
-              SizedBox(height: getScreenHeight(0.02)),
-              Center(
-                child: Container(
-                  height: 5,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).textTheme.displayLarge?.color,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              SizedBox(height: getScreenHeight(0.03)),
-              Text(
-                'task_detail_title'.tr(),
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.displayLarge?.color,
-                  fontFamily: 'PoppinsSemiBold',
-                  fontSize: 22,
-                ),
-              ),
-              SizedBox(height: getScreenHeight(0.05)),
-              // Task Detail Info
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
-                child: Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xff061B3D).withOpacity(0.25),
-                        blurRadius: 15,
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(Icons.description),
-                      SizedBox(height: getScreenHeight(0.02)),
-                      Text('form_description'.tr(), style: titleTextStyle),
-                      SizedBox(height: getScreenHeight(0.02)),
-                      Text(taskDetail.description, style: dataDetailTextStyle),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
-                child: Container(
-                  height: 120,
-                  width: double.infinity,
-                  margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xff061B3D).withOpacity(0.25),
-                        blurRadius: 15,
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(Icons.calendar_month),
-                      Text('form_duedate'.tr(), style: titleTextStyle),
-                      Text(taskDetail.dueDate, style: dataDetailTextStyle),
-                    ],
-                  ),
-                ),
-              ),
-              Spacer(),
-              // Buttons
-              Row(
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: Column(
                 children: [
-                  // Edit Button
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditTaskView(
-                                  taskKey: taskDetail.key!,
-                                  taskDetail: taskDetail),
-                            ));
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: getScreenWidth(0.05)),
-                        child: Container(
-                          height: 50,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.orange),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'task_detail_edit_button'.tr(),
-                              style: TextStyle(
-                                color: Colors.orange,
-                                fontFamily: 'PoppinsSemiBold',
-                                fontSize: 16,
+                  SizedBox(height: getScreenHeight(0.02)),
+                  Center(
+                    child: Container(
+                      height: 5,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).textTheme.displayLarge?.color,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: getScreenHeight(0.03)),
+                  Text(
+                    'task_detail_title'.tr(),
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.displayLarge?.color,
+                      fontFamily: 'PoppinsSemiBold',
+                      fontSize: 22,
+                    ),
+                  ),
+                  SizedBox(height: getScreenHeight(0.05)),
+                  // Task Detail Info
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
+                    child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xff061B3D).withOpacity(0.25),
+                            blurRadius: 15,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.description),
+                          SizedBox(height: getScreenHeight(0.02)),
+                          Text('form_description'.tr(), style: titleTextStyle),
+                          SizedBox(height: getScreenHeight(0.02)),
+                          Text(taskDetail.description,
+                              style: dataDetailTextStyle),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
+                    child: Container(
+                      height: 120,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xff061B3D).withOpacity(0.25),
+                            blurRadius: 15,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.calendar_month),
+                          Text('form_duedate'.tr(), style: titleTextStyle),
+                          Text(taskDetail.dueDate, style: dataDetailTextStyle),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Task completed
+                  CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: taskDetail.isCompleted,
+                    checkColor: Theme.of(context).textTheme.displayLarge!.color,
+                    title: Text('task_completed'.tr()),
+                    onChanged: (value) {
+                      context
+                          .read<AddTaskCubit>()
+                          .toggleTaskCompletion(taskDetail.key!);
+                      setState(() {});
+                    },
+                  ),
+                  Spacer(),
+                  // Buttons
+                  Row(
+                    children: [
+                      // Edit Button
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditTaskView(
+                                      taskKey: taskDetail.key!,
+                                      taskDetail: taskDetail),
+                                ));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: getScreenWidth(0.05)),
+                            child: Container(
+                              height: 50,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.orange),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'task_detail_edit_button'.tr(),
+                                  style: TextStyle(
+                                    color: Colors.orange,
+                                    fontFamily: 'PoppinsSemiBold',
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  // Delete Button
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Popups().QuestionDangerPopup(context,
-                            title: 'task_delete_popup_title'.tr(),
-                            message: 'task_delete_popup_message'.tr(),
-                            onTopYes: () {
-                              if (taskDetail.key != null) {
-                                context
-                                    .read<AddTaskCubit>()
-                                    .deleteTask(taskDetail.key!);
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          'Task cannot be deleted. No valid key found.')),
-                                );
-                              }
-                              Navigator.popUntil(
-                                  context, (route) => route.isFirst);
-                            },
-                            onTopNo: () => Navigator.pop(context));
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: getScreenWidth(0.05)),
-                        child: Container(
-                          height: 50,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(44, 244, 67, 54),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.red),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'task_detail_delete_button'.tr(),
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontFamily: 'PoppinsSemiBold',
-                                fontSize: 16,
+                      // Delete Button
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Popups().QuestionDangerPopup(context,
+                                title: 'task_delete_popup_title'.tr(),
+                                message: 'task_delete_popup_message'.tr(),
+                                onTopYes: () {
+                                  if (taskDetail.key != null) {
+                                    context
+                                        .read<AddTaskCubit>()
+                                        .deleteTask(taskDetail.key!);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Task cannot be deleted. No valid key found.')),
+                                    );
+                                  }
+                                  Navigator.popUntil(
+                                      context, (route) => route.isFirst);
+                                },
+                                onTopNo: () => Navigator.pop(context));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: getScreenWidth(0.05)),
+                            child: Container(
+                              height: 50,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(44, 244, 67, 54),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.red),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'task_detail_delete_button'.tr(),
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontFamily: 'PoppinsSemiBold',
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
+                  SizedBox(height: getScreenHeight(0.05)),
                 ],
               ),
-              SizedBox(height: getScreenHeight(0.05)),
-            ],
-          ),
+            );
+          },
         );
       },
-    );
+    ).then((value) => setState(() {}));
   }
 
   Widget emptyListState() {

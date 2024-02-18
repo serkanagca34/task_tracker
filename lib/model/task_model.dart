@@ -8,6 +8,7 @@ part 'task_model.g.dart';
 @HiveType(typeId: 0)
 class TaskModel extends Equatable {
   int? key;
+
   @HiveField(0)
   final String title;
 
@@ -20,14 +21,19 @@ class TaskModel extends Equatable {
   @HiveField(3)
   final String priorityLevels;
 
+  @HiveField(4)
+  bool isCompleted;
+
   TaskModel({
     this.key,
     required this.title,
     required this.description,
     required this.dueDate,
     required this.priorityLevels,
+    this.isCompleted = false,
   });
 
   @override
-  List<Object> get props => [title, description, dueDate, priorityLevels];
+  List<Object?> get props =>
+      [key, title, description, dueDate, priorityLevels, isCompleted];
 }
