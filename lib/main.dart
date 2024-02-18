@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ Future<void> main() async {
   await openBoxAll();
   // EasyLocalization Initialize
   await EasyLocalization.ensureInitialized();
+  // Firebase Initialize
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -41,7 +43,6 @@ Future<void> main() async {
   } catch (e) {
     print('Firebase initialization error: $e');
   }
-
   runApp(
     EasyLocalization(
       supportedLocales: <Locale>[

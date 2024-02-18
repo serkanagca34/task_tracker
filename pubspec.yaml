@@ -57,7 +57,9 @@ dependencies:
   geocoding: ^2.1.1
   # Language
   easy_localization: ^3.0.4
+  # Remote Config
   firebase_core: ^2.25.4
+  firebase_remote_config: ^4.3.13
 
   
 

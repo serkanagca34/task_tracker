@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_tacker/constans/colors.dart';
@@ -14,6 +17,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+  var isVisibleButton =
+      FirebaseRemoteConfig.instance.getBool('button_visibility');
+
+  late StreamSubscription<RemoteConfigUpdate> _streamSubscription;
+
   int selectedIndex = 0;
   _HomeViewState({required this.selectedIndex});
   static List<Widget> _widgetOptions = <Widget>[
@@ -32,6 +41,29 @@ class _HomeViewState extends State<HomeView> {
     setState(() {
       selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _streamSubscription = remoteConfig.onConfigUpdated.listen((event) async {
+      await remoteConfig.activate();
+
+      if (event.updatedKeys.contains('button_visibility')) {
+        var newValue = remoteConfig.getBool('button_visibility');
+
+        setState(() {
+          isVisibleButton = newValue;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -115,24 +147,27 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             // Add Task
-            Positioned(
-              top: screenWidth < 360
-                  ? -screenHeight * 0.045
-                  : -screenHeight * 0.035,
-              left: screenWidth * 0.26,
-              right: screenWidth * 0.33,
-              child: GestureDetector(
-                onTap: () => _onItemTapped(1),
-                child: Container(
-                    height: 59,
-                    width: 59,
-                    padding: EdgeInsets.all(13),
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey,
-                      shape: BoxShape.circle,
-                    ),
-                    child: SvgPicture.asset('assets/icons/add.svg',
-                        color: Colors.white)),
+            Visibility(
+              visible: isVisibleButton,
+              child: Positioned(
+                top: screenWidth < 360
+                    ? -screenHeight * 0.045
+                    : -screenHeight * 0.035,
+                left: screenWidth * 0.26,
+                right: screenWidth * 0.33,
+                child: GestureDetector(
+                  onTap: () => _onItemTapped(1),
+                  child: Container(
+                      height: 59,
+                      width: 59,
+                      padding: EdgeInsets.all(13),
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SvgPicture.asset('assets/icons/add.svg',
+                          color: Colors.white)),
+                ),
               ),
             ),
           ],
