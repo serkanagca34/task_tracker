@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,8 @@ class AddTaskCubit extends Cubit<AddTaskState> {
 
   final String _boxName = 'tasksBox';
 
+  List<TaskModel> displayTask = [];
+
   void getTasks() async {
     final box = await Hive.openBox<TaskModel>(_boxName);
     List<TaskModel> tasks = [];
@@ -21,6 +24,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       tasks.add(task);
       index++;
     }
+    displayTask = tasks;
     emit(AddTaskLoaded(tasks));
   }
 
@@ -56,24 +60,21 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   // List Sorts
 
   void sortTasksByLastDate() {
-    var tasks = (state as AddTaskLoaded).tasks;
-    tasks.sort((a, b) => b.dueDate.compareTo(a.dueDate));
-    emit(AddTaskLoaded(tasks));
+    displayTask.sort((a, b) => b.dueDate.compareTo(a.dueDate));
+    emit(AddTaskLoaded(displayTask));
   }
 
   void sortTasksByCompletion() {
-    var tasks = (state as AddTaskLoaded).tasks;
-    tasks.sort((a, b) {
+    displayTask.sort((a, b) {
       int aVal = a.isCompleted ? 1 : 0;
       int bVal = b.isCompleted ? 1 : 0;
       return bVal.compareTo(aVal);
     });
-    emit(AddTaskLoaded(tasks));
+    emit(AddTaskLoaded(displayTask));
   }
 
   void sortTasksByPriority(String priority) {
-    var tasks = (state as AddTaskLoaded).tasks;
-    tasks.sort((a, b) {
+    displayTask.sort((a, b) {
       if (a.priorityLevels == priority && b.priorityLevels != priority) {
         return -1;
       } else if (a.priorityLevels != priority && b.priorityLevels == priority) {
@@ -82,6 +83,42 @@ class AddTaskCubit extends Cubit<AddTaskState> {
         return 0;
       }
     });
-    emit(AddTaskLoaded(tasks));
+    emit(AddTaskLoaded(displayTask));
+  }
+
+  // List Filter
+  void filterTasks(Set<String> filters) {
+    if (filters.isEmpty) {
+      emit(AddTaskLoaded(displayTask));
+      return;
+    }
+
+    List<TaskModel> filteredTasks = displayTask;
+
+    // 'completed'
+    if (filters.contains('completed'.tr())) {
+      filteredTasks = filteredTasks.where((task) => task.isCompleted).toList();
+    }
+
+    // 'high', 'medium', 'low'
+    if (filters.contains('high'.tr()) ||
+        filters.contains('medium'.tr()) ||
+        filters.contains('low'.tr())) {
+      filteredTasks = filteredTasks.where((task) {
+        if (filters.contains('high'.tr()) && task.priorityLevels == 'High') {
+          return true;
+        }
+        if (filters.contains('medium'.tr()) &&
+            task.priorityLevels == 'Medium') {
+          return true;
+        }
+        if (filters.contains('low'.tr()) && task.priorityLevels == 'Low') {
+          return true;
+        }
+        return false;
+      }).toList();
+    }
+
+    emit(AddTaskLoaded(filteredTasks));
   }
 }
