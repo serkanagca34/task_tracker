@@ -75,7 +75,12 @@
      "completed":"Tamamlanan",
      "high":"Yüksek",
      "medium":"Orta",
-     "low":"Düşük"
+     "low":"Düşük",
+
+
+     "_comment12": "Reminder Text",
+     "reminder_input_title": "Hatırlatma Tarihi",
+     "reminder_input_hint": "Hatırlatma tarihi seçin"
      
       
 

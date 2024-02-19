@@ -10,6 +10,7 @@ import 'package:task_tacker/model/language_model.dart';
 import 'package:task_tacker/model/task_model.dart';
 import 'package:task_tacker/model/theme_model.dart';
 import 'package:task_tacker/services/hive_boxes.dart';
+import 'package:task_tacker/services/notifications.dart';
 import 'package:task_tacker/services/service_locator.dart';
 import 'package:task_tacker/theme/dark_theme.dart';
 import 'package:task_tacker/theme/light_theme.dart';
@@ -19,6 +20,7 @@ import 'package:task_tacker/view_model/fake_api/fake_api_cubit.dart';
 import 'package:task_tacker/view_model/language_cubit.dart';
 import 'package:task_tacker/view_model/theme_cubit.dart';
 import 'package:task_tacker/view_model/weather/weather_cubit.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +36,9 @@ Future<void> main() async {
   await openBoxAll();
   // EasyLocalization Initialize
   await EasyLocalization.ensureInitialized();
+  // Local Notifications Initialize
+  await LocalNotifications().init();
+  tz.initializeTimeZones();
   // Firebase Initialize
   try {
     await Firebase.initializeApp(

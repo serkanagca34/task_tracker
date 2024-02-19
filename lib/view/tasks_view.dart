@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -9,9 +10,11 @@ import 'package:lottie/lottie.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:task_tacker/components/costume_appbar.dart';
 import 'package:task_tacker/components/popup.dart';
+import 'package:task_tacker/constans/colors.dart';
 import 'package:task_tacker/model/task_model.dart';
 import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/services/hive_boxes.dart';
+import 'package:task_tacker/services/notifications.dart';
 import 'package:task_tacker/view/edit_task_view.dart';
 import 'package:task_tacker/view/fake_api/fake_api_view.dart';
 import 'package:task_tacker/view_model/add_task/add_task_cubit.dart';
@@ -27,6 +30,10 @@ class _TasksViewState extends State<TasksView> {
   String selectedSort = 'high'.tr();
 
   Set<String> selectedFilters = {};
+
+  bool _isSelectedRemindDate = false;
+
+  TextEditingController _reminderDateController = TextEditingController();
 
   @override
   void initState() {
@@ -808,34 +815,34 @@ class _TasksViewState extends State<TasksView> {
           builder: (context, setState) {
             return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.background,
-              body: Column(
-                children: [
-                  SizedBox(height: getScreenHeight(0.02)),
-                  Center(
-                    child: Container(
-                      height: 5,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).textTheme.displayLarge?.color,
-                        borderRadius: BorderRadius.circular(10),
+              body: Padding(
+                padding: EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
+                child: Column(
+                  children: [
+                    SizedBox(height: getScreenHeight(0.02)),
+                    Center(
+                      child: Container(
+                        height: 5,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).textTheme.displayLarge?.color,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: getScreenHeight(0.03)),
-                  Text(
-                    'task_detail_title'.tr(),
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.displayLarge?.color,
-                      fontFamily: 'PoppinsSemiBold',
-                      fontSize: 22,
+                    SizedBox(height: getScreenHeight(0.03)),
+                    Text(
+                      'task_detail_title'.tr(),
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.displayLarge?.color,
+                        fontFamily: 'PoppinsSemiBold',
+                        fontSize: 22,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: getScreenHeight(0.05)),
-                  // Task Detail Info
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
-                    child: Container(
+                    SizedBox(height: getScreenHeight(0.05)),
+                    // Task Detail Info
+                    Container(
                       width: double.infinity,
                       margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
                       padding: EdgeInsets.all(10),
@@ -861,11 +868,7 @@ class _TasksViewState extends State<TasksView> {
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
-                    child: Container(
+                    Container(
                       height: 120,
                       width: double.infinity,
                       margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
@@ -888,114 +891,212 @@ class _TasksViewState extends State<TasksView> {
                         ],
                       ),
                     ),
-                  ),
-                  // Task completed
-                  CheckboxListTile(
-                    controlAffinity: ListTileControlAffinity.leading,
-                    value: taskDetail.isCompleted,
-                    checkColor: Theme.of(context).textTheme.displayLarge!.color,
-                    title: Text('task_completed'.tr()),
-                    onChanged: (value) {
-                      context
-                          .read<AddTaskCubit>()
-                          .toggleTaskCompletion(taskDetail.key!);
-                      setState(() {});
-                    },
-                  ),
-                  Spacer(),
-                  // Buttons
-                  Row(
-                    children: [
-                      // Edit Button
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditTaskView(
-                                      taskKey: taskDetail.key!,
-                                      taskDetail: taskDetail),
-                                ));
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: getScreenWidth(0.05)),
-                            child: Container(
-                              height: 50,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.orange.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.orange),
-                              ),
-                              child: Center(
+                    // Task completed
+                    CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: taskDetail.isCompleted,
+                      checkColor:
+                          Theme.of(context).textTheme.displayLarge!.color,
+                      title: Text('task_completed'.tr()),
+                      onChanged: (value) {
+                        context
+                            .read<AddTaskCubit>()
+                            .toggleTaskCompletion(taskDetail.key!);
+                        setState(() {});
+                      },
+                    ),
+                    SizedBox(height: getScreenHeight(0.03)),
+                    // Select Reminder Date
+                    TextFormField(
+                      controller: _reminderDateController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.none,
+                      readOnly: true,
+                      decoration: inputDecoration(
+                        hintText: 'reminder_input_hint'.tr(),
+                        label: Text("reminder_input_title".tr()),
+                      ),
+                      onTap: () {
+                        showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoActionSheet(
+                              actions: [
+                                SizedBox(
+                                  height: 180,
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () =>
+                                        Navigator.of(context).pop(true),
+                                    child: CupertinoDatePicker(
+                                      backgroundColor: Colors.transparent,
+                                      initialDateTime: DateTime.now(),
+                                      mode: CupertinoDatePickerMode.dateAndTime,
+                                      onDateTimeChanged: (value) {
+                                        setState(() {
+                                          _reminderDateController.text =
+                                              value.toString().substring(0, 16);
+                                          _isSelectedRemindDate = true;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                              cancelButton: CupertinoActionSheetAction(
+                                onPressed: () => Navigator.pop(context),
                                 child: Text(
-                                  'task_detail_edit_button'.tr(),
+                                  'Cancel',
                                   style: TextStyle(
-                                    color: Colors.orange,
-                                    fontFamily: 'PoppinsSemiBold',
-                                    fontSize: 16,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge
+                                        ?.color,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(height: getScreenHeight(0.03)),
+                    // Remind Button
+                    Visibility(
+                      visible: _isSelectedRemindDate,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          LocalNotifications().scheduleNotification(
+                            taskDetail.key!,
+                            taskDetail.title,
+                            taskDetail.priorityLevels,
+                            _reminderDateController.text,
+                          );
+
+                          setState(() {
+                            _reminderDateController.clear();
+                            _isSelectedRemindDate = false;
+                            Popups().successPopup(
+                                context, 'Hatırlatılmak üzere planlandı');
+                          });
+                        },
+                        style: ButtonStyle(
+                          minimumSize: MaterialStatePropertyAll(
+                              Size(double.infinity, 55)),
+                          maximumSize: MaterialStatePropertyAll(
+                              Size(double.infinity, 55)),
+                          backgroundColor: MaterialStatePropertyAll(
+                              Theme.of(context).colorScheme.secondary),
+                          shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        ),
+                        child: Text(
+                          'Remind Me',
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge!
+                                  .color),
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    // Buttons
+                    Row(
+                      children: [
+                        // Edit Button
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditTaskView(
+                                        taskKey: taskDetail.key!,
+                                        taskDetail: taskDetail),
+                                  ));
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getScreenWidth(0.05)),
+                              child: Container(
+                                height: 50,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: Colors.orange),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'task_detail_edit_button'.tr(),
+                                    style: TextStyle(
+                                      color: Colors.orange,
+                                      fontFamily: 'PoppinsSemiBold',
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      // Delete Button
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Popups().QuestionDangerPopup(context,
-                                title: 'task_delete_popup_title'.tr(),
-                                message: 'task_delete_popup_message'.tr(),
-                                onTopYes: () {
-                                  if (taskDetail.key != null) {
-                                    context
-                                        .read<AddTaskCubit>()
-                                        .deleteTask(taskDetail.key!);
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Task cannot be deleted. No valid key found.')),
-                                    );
-                                  }
-                                  Navigator.popUntil(
-                                      context, (route) => route.isFirst);
-                                },
-                                onTopNo: () => Navigator.pop(context));
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: getScreenWidth(0.05)),
-                            child: Container(
-                              height: 50,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(44, 244, 67, 54),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.red),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'task_detail_delete_button'.tr(),
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontFamily: 'PoppinsSemiBold',
-                                    fontSize: 16,
+                        // Delete Button
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Popups().QuestionDangerPopup(context,
+                                  title: 'task_delete_popup_title'.tr(),
+                                  message: 'task_delete_popup_message'.tr(),
+                                  onTopYes: () {
+                                    if (taskDetail.key != null) {
+                                      context
+                                          .read<AddTaskCubit>()
+                                          .deleteTask(taskDetail.key!);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Task cannot be deleted. No valid key found.')),
+                                      );
+                                    }
+                                    Navigator.popUntil(
+                                        context, (route) => route.isFirst);
+                                  },
+                                  onTopNo: () => Navigator.pop(context));
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getScreenWidth(0.05)),
+                              child: Container(
+                                height: 50,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(44, 244, 67, 54),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: Colors.red),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'task_detail_delete_button'.tr(),
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontFamily: 'PoppinsSemiBold',
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: getScreenHeight(0.05)),
-                ],
+                      ],
+                    ),
+                    SizedBox(height: getScreenHeight(0.05)),
+                  ],
+                ),
               ),
             );
           },
@@ -1004,6 +1105,8 @@ class _TasksViewState extends State<TasksView> {
     ).then((value) {
       setState(() {});
       context.read<AddTaskCubit>().sortTasksByCompletion();
+      _reminderDateController.clear();
+      _isSelectedRemindDate = false;
     });
   }
 
@@ -1049,6 +1152,38 @@ class _TasksViewState extends State<TasksView> {
       color: Color(0xffABB5C4),
       fontFamily: 'PoppinsSemiBold',
       fontSize: 12,
+    );
+  }
+
+  InputDecoration inputDecoration({
+    required String hintText,
+    required Widget label,
+  }) {
+    return InputDecoration(
+      hintText: hintText,
+      label: label,
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: kTextColorLight),
+        gapPadding: 10,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: Colors.blue),
+        gapPadding: 10,
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: Colors.red),
+        gapPadding: 10,
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: Colors.red),
+        gapPadding: 10,
+      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
     );
   }
 }

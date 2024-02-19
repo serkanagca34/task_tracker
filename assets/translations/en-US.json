@@ -75,7 +75,12 @@
      "completed":"Completed",
      "high":"High",
      "medium":"Medium",
-     "low":"Low"
+     "low":"Low",
+
+     "_comment12": "Reminder Text",
+     "reminder_input_title": "Reminder Date",
+     "reminder_input_hint": "Select Reminder Date"
+     
 
 
      

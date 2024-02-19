@@ -41,7 +41,7 @@ class _WeatherViewState extends State<WeatherView> {
           BlocBuilder<WeatherCubit, WeatherState>(
             builder: (context, state) {
               if (state is WeatherLoading) {
-                return Center(child: CupertinoActivityIndicator());
+                return Center(child: Text('Bilgiler Alınıyor...'));
               } else if (state is WeatherError) {
                 return Center(child: Text(state.errorMessage));
               } else if (state is WeatherSuccess) {

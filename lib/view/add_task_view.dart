@@ -272,12 +272,14 @@ class _AddTaskViewState extends State<AddTaskView> {
           onTap: () => Navigator.of(context).pop(true),
           child: CupertinoDatePicker(
             backgroundColor: Colors.transparent,
-            initialDateTime: DateTime(DateTime.now().year),
+            minimumDate: DateTime.now(),
+            minimumYear: 1,
+            use24hFormat: true,
+            initialDateTime: DateTime.now(),
             mode: CupertinoDatePickerMode.dateAndTime,
             onDateTimeChanged: (value) {
               setState(() {
-                final _dueDate =
-                    value.toString().substring(0, 16).split(' ').join(' / ');
+                final _dueDate = value.toString().substring(0, 16);
                 _dueDateController.text = _dueDate;
                 print('_dueDate: ${_dueDateController.text}');
               });
