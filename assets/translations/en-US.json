@@ -68,7 +68,17 @@
      "highest": "H",
      "lowest": "L",
 
-     "task_completed": "I completed the task"
+     "task_completed": "I completed the task",
+
+     "_comment11": "Sort Texts",
+     "last_date":"LastDate",
+     "completed":"Completed",
+     "high":"High",
+     "medium":"Medium",
+     "low":"Low"
+
+
+     
      
       
 

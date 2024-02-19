@@ -24,6 +24,8 @@ class TasksView extends StatefulWidget {
 class _TasksViewState extends State<TasksView> {
   bool? horizontalDesingChange;
 
+  String selectedSort = 'high'.tr();
+
   @override
   void initState() {
     super.initState();
@@ -82,244 +84,347 @@ class _TasksViewState extends State<TasksView> {
         if (state is AddTaskLoaded) {
           return Column(
             children: [
+              // Sort & Filter
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
+                child: Row(
+                  children: [
+                    Icon(Icons.sort),
+                    SizedBox(width: getScreenWidth(0.02)),
+                    DropdownButton<String>(
+                      value: selectedSort,
+                      items: <String>[
+                        'last_date'.tr(),
+                        'completed'.tr(),
+                        'high'.tr(),
+                        'medium'.tr(),
+                        'low'.tr(),
+                      ].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          if (newValue == 'last_date'.tr()) {
+                            context.read<AddTaskCubit>().sortTasksByLastDate();
+                          } else if (newValue == 'completed'.tr()) {
+                            context
+                                .read<AddTaskCubit>()
+                                .sortTasksByCompletion();
+                          } else if (newValue == 'high'.tr()) {
+                            context
+                                .read<AddTaskCubit>()
+                                .sortTasksByPriority('High');
+                          } else if (newValue == 'medium'.tr()) {
+                            context
+                                .read<AddTaskCubit>()
+                                .sortTasksByPriority('Medium');
+                          } else if (newValue == 'low'.tr()) {
+                            context
+                                .read<AddTaskCubit>()
+                                .sortTasksByPriority('Low');
+                          }
+                          setState(() {
+                            selectedSort = newValue;
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              // List
               Expanded(
                 child: state.tasks.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: state.tasks.length,
-                        padding: EdgeInsets.only(
-                            top: getScreenHeight(0.03),
-                            bottom: getScreenHeight(0.15)),
-                        itemBuilder: (context, index) {
-                          final tasks = state.tasks[index];
-                          Color? _priorityBoxColor = Colors.grey;
+                    ? BlocBuilder<AddTaskCubit, AddTaskState>(
+                        builder: (context, state) {
+                          if (state is AddTaskLoaded) {
+                            return ListView.builder(
+                              itemCount: state.tasks.length,
+                              padding: EdgeInsets.only(
+                                  top: getScreenHeight(0.03),
+                                  bottom: getScreenHeight(0.15)),
+                              itemBuilder: (context, index) {
+                                final tasks = state.tasks[index];
+                                Color? _priorityBoxColor = Colors.grey;
 
-                          switch (tasks.priorityLevels) {
-                            case 'Low' || 'Düşük':
-                              _priorityBoxColor = Colors.green;
-                              break;
+                                switch (tasks.priorityLevels) {
+                                  case 'Low':
+                                    _priorityBoxColor = Colors.green;
+                                    break;
 
-                            case 'Medium' || 'Orta':
-                              _priorityBoxColor = Colors.orange;
-                              break;
+                                  case 'Medium':
+                                    _priorityBoxColor = Colors.orange;
+                                    break;
 
-                            case 'High' || 'Yüksek':
-                              _priorityBoxColor = Colors.red;
-                              break;
-                            default:
-                          }
-                          return GestureDetector(
-                            onTap: () => taskDetail(context, tasks),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: getScreenWidth(0.04)),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Positioned.fill(
-                                    child: Builder(
-                                      builder: (context) => Container(
-                                        height: 106,
-                                        margin: EdgeInsets.only(
-                                            bottom: getScreenHeight(0.03)),
-                                        decoration: BoxDecoration(
-                                          color: Colors.orange,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Slidable(
-                                    key: UniqueKey(),
-                                    direction: Axis.horizontal,
-                                    endActionPane: ActionPane(
-                                      motion: BehindMotion(),
-                                      extentRatio: 0.25,
+                                  case 'High':
+                                    _priorityBoxColor = Colors.red;
+                                    break;
+                                  default:
+                                }
+                                return GestureDetector(
+                                  onTap: () => taskDetail(context, tasks),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: getScreenWidth(0.04)),
+                                    child: Stack(
+                                      alignment: Alignment.center,
                                       children: [
-                                        // Edit Button
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditTaskView(
-                                                            taskKey: tasks.key!,
-                                                            taskDetail: tasks),
-                                                  ));
-                                            },
-                                            child: Container(
+                                        Positioned.fill(
+                                          child: Builder(
+                                            builder: (context) => Container(
                                               height: 106,
                                               margin: EdgeInsets.only(
                                                   bottom:
                                                       getScreenHeight(0.03)),
                                               decoration: BoxDecoration(
-                                                gradient: const LinearGradient(
-                                                  colors: [
-                                                    Colors.orange,
-                                                    Colors.orange,
-                                                  ],
-                                                ),
-                                                borderRadius: BorderRadius.only(
-                                                  bottomRight:
-                                                      Radius.circular(14),
-                                                  topRight: Radius.circular(14),
-                                                ),
+                                                color: Colors.orange,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
                                               ),
-                                              child: Icon(Icons.edit,
-                                                  color: Colors.white),
                                             ),
                                           ),
                                         ),
-                                        // Delete Button
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: () {
-                                              Popups().QuestionDangerPopup(
-                                                  context,
-                                                  title:
-                                                      'task_delete_popup_title'
-                                                          .tr(),
-                                                  message:
-                                                      'task_delete_popup_message'
-                                                          .tr(),
-                                                  onTopYes: () {
-                                                    if (tasks.key != null) {
-                                                      context
-                                                          .read<AddTaskCubit>()
-                                                          .deleteTask(
-                                                              tasks.key!);
-                                                    } else {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        SnackBar(
-                                                            content: Text(
-                                                                'Task cannot be deleted. No valid key found.')),
-                                                      );
-                                                    }
-                                                    Navigator.popUntil(
+                                        Slidable(
+                                          key: UniqueKey(),
+                                          direction: Axis.horizontal,
+                                          endActionPane: ActionPane(
+                                            motion: BehindMotion(),
+                                            extentRatio: 0.25,
+                                            children: [
+                                              // Edit Button
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
                                                         context,
-                                                        (route) =>
-                                                            route.isFirst);
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditTaskView(
+                                                                  taskKey: tasks
+                                                                      .key!,
+                                                                  taskDetail:
+                                                                      tasks),
+                                                        ));
                                                   },
-                                                  onTopNo: () =>
-                                                      Navigator.pop(context));
-                                            },
-                                            child: Container(
-                                              height: 106,
-                                              margin: EdgeInsets.only(
-                                                  bottom:
-                                                      getScreenHeight(0.03)),
-                                              decoration: BoxDecoration(
-                                                gradient: const LinearGradient(
-                                                  colors: [
-                                                    Color(0xFFD92525),
-                                                    Color(0xFFD92525),
-                                                  ],
-                                                ),
-                                                borderRadius: BorderRadius.only(
-                                                  bottomRight:
-                                                      Radius.circular(14),
-                                                  topRight: Radius.circular(14),
-                                                ),
-                                              ),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    'assets/icons/delete-white.svg',
-                                                    height: 30,
+                                                  child: Container(
+                                                    height: 106,
+                                                    margin: EdgeInsets.only(
+                                                        bottom: getScreenHeight(
+                                                            0.03)),
+                                                    decoration: BoxDecoration(
+                                                      gradient:
+                                                          const LinearGradient(
+                                                        colors: [
+                                                          Colors.orange,
+                                                          Colors.orange,
+                                                        ],
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        bottomRight:
+                                                            Radius.circular(14),
+                                                        topRight:
+                                                            Radius.circular(14),
+                                                      ),
+                                                    ),
+                                                    child: Icon(Icons.edit,
+                                                        color: Colors.white),
                                                   ),
-                                                ],
+                                                ),
                                               ),
+                                              // Delete Button
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Popups().QuestionDangerPopup(
+                                                        context,
+                                                        title:
+                                                            'task_delete_popup_title'
+                                                                .tr(),
+                                                        message:
+                                                            'task_delete_popup_message'
+                                                                .tr(),
+                                                        onTopYes: () {
+                                                          if (tasks.key !=
+                                                              null) {
+                                                            context
+                                                                .read<
+                                                                    AddTaskCubit>()
+                                                                .deleteTask(
+                                                                    tasks.key!);
+                                                          } else {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                  content: Text(
+                                                                      'Task cannot be deleted. No valid key found.')),
+                                                            );
+                                                          }
+                                                          Navigator.popUntil(
+                                                              context,
+                                                              (route) => route
+                                                                  .isFirst);
+                                                        },
+                                                        onTopNo: () =>
+                                                            Navigator.pop(
+                                                                context));
+                                                  },
+                                                  child: Container(
+                                                    height: 106,
+                                                    margin: EdgeInsets.only(
+                                                        bottom: getScreenHeight(
+                                                            0.03)),
+                                                    decoration: BoxDecoration(
+                                                      gradient:
+                                                          const LinearGradient(
+                                                        colors: [
+                                                          Color(0xFFD92525),
+                                                          Color(0xFFD92525),
+                                                        ],
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        bottomRight:
+                                                            Radius.circular(14),
+                                                        topRight:
+                                                            Radius.circular(14),
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          'assets/icons/delete-white.svg',
+                                                          height: 30,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Container(
+                                            height: 90,
+                                            margin: EdgeInsets.only(
+                                                bottom: getScreenHeight(0.03)),
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Color.fromARGB(
+                                                      108, 74, 115, 168),
+                                                  blurRadius: 15,
+                                                ),
+                                              ],
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                    width:
+                                                        getScreenWidth(0.05)),
+                                                tasks.isCompleted
+                                                    ? SvgPicture.asset(
+                                                        'assets/icons/done.svg',
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .displayLarge
+                                                            ?.color,
+                                                      )
+                                                    : SvgPicture.asset(
+                                                        'assets/icons/nodone.svg',
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .displayLarge
+                                                            ?.color,
+                                                      ),
+                                                SizedBox(
+                                                    width:
+                                                        getScreenWidth(0.05)),
+                                                // Title
+                                                Expanded(
+                                                  flex: 30,
+                                                  child: Text(
+                                                    tasks.title,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'PoppinsSemiBold',
+                                                      fontSize: 14,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .displayLarge
+                                                          ?.color,
+                                                    ),
+                                                  ),
+                                                ),
+                                                // Date
+                                                Expanded(
+                                                  flex: 70,
+                                                  child: Text(
+                                                    tasks.dueDate,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'PoppinsSemiBold',
+                                                      fontSize: 14,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .displayLarge
+                                                          ?.color,
+                                                    ),
+                                                  ),
+                                                ),
+                                                // Priority
+                                                Container(
+                                                  height: 30,
+                                                  width: getScreenWidth(0.15),
+                                                  decoration: BoxDecoration(
+                                                    color: _priorityBoxColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Center(
+                                                      child: Text(
+                                                    tasks.priorityLevels,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'PoppinsSemiBold',
+                                                      fontSize: 12,
+                                                      color: Colors.white,
+                                                    ),
+                                                  )),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        getScreenWidth(0.05)),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    child: Container(
-                                      height: 90,
-                                      margin: EdgeInsets.only(
-                                          bottom: getScreenHeight(0.03)),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color.fromARGB(
-                                                108, 74, 115, 168),
-                                            blurRadius: 15,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(width: getScreenWidth(0.05)),
-                                          tasks.isCompleted
-                                              ? SvgPicture.asset(
-                                                  'assets/icons/done.svg',
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .displayLarge
-                                                      ?.color,
-                                                )
-                                              : SvgPicture.asset(
-                                                  'assets/icons/nodone.svg',
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .displayLarge
-                                                      ?.color,
-                                                ),
-                                          SizedBox(width: getScreenWidth(0.05)),
-                                          // Title
-                                          Expanded(
-                                            child: Text(
-                                              tasks.title,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                fontFamily: 'PoppinsSemiBold',
-                                                fontSize: 14,
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .displayLarge
-                                                    ?.color,
-                                              ),
-                                            ),
-                                          ),
-                                          // Priority
-                                          Container(
-                                            height: 30,
-                                            width: getScreenWidth(0.15),
-                                            decoration: BoxDecoration(
-                                              color: _priorityBoxColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Center(
-                                                child: Text(
-                                              tasks.priorityLevels,
-                                              style: TextStyle(
-                                                fontFamily: 'PoppinsSemiBold',
-                                                fontSize: 12,
-                                                color: Colors.white,
-                                              ),
-                                            )),
-                                          ),
-                                          SizedBox(width: getScreenWidth(0.05)),
-                                        ],
-                                      ),
-                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          );
+                                );
+                              },
+                            );
+                          }
+                          return SizedBox.shrink();
                         },
                       )
                     : emptyListState(),
@@ -338,180 +443,269 @@ class _TasksViewState extends State<TasksView> {
         if (state is AddTaskLoaded) {
           return Column(
             children: [
+              // Sort & Filter
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
+                child: Row(
+                  children: [
+                    Icon(Icons.sort),
+                    SizedBox(width: getScreenWidth(0.02)),
+                    DropdownButton<String>(
+                      value: selectedSort,
+                      items: <String>[
+                        'last_date'.tr(),
+                        'completed'.tr(),
+                        'high'.tr(),
+                        'medium'.tr(),
+                        'low'.tr(),
+                      ].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          if (newValue == 'last_date'.tr()) {
+                            context.read<AddTaskCubit>().sortTasksByLastDate();
+                          } else if (newValue == 'completed'.tr()) {
+                            context
+                                .read<AddTaskCubit>()
+                                .sortTasksByCompletion();
+                          } else if (newValue == 'high'.tr()) {
+                            context
+                                .read<AddTaskCubit>()
+                                .sortTasksByPriority('High');
+                          } else if (newValue == 'medium'.tr()) {
+                            context
+                                .read<AddTaskCubit>()
+                                .sortTasksByPriority('Medium');
+                          } else if (newValue == 'low'.tr()) {
+                            context
+                                .read<AddTaskCubit>()
+                                .sortTasksByPriority('Low');
+                          }
+                          setState(() {
+                            selectedSort = newValue;
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              // List
               Expanded(
                 child: state.tasks.isNotEmpty
-                    ? GridView.builder(
-                        itemCount: state.tasks.length,
-                        padding: EdgeInsets.only(
-                            right: getScreenWidth(0.04),
-                            left: getScreenWidth(0.04),
-                            bottom: getScreenHeight(0.15)),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 25,
-                          mainAxisSpacing: 15,
-                          crossAxisCount: 2,
-                          mainAxisExtent: 225,
-                        ),
-                        itemBuilder: (context, index) {
-                          final tasks = state.tasks[index];
-                          Color _priorityBoxColor = Colors.grey;
+                    ? BlocBuilder<AddTaskCubit, AddTaskState>(
+                        builder: (context, state) {
+                          if (state is AddTaskLoaded) {
+                            return GridView.builder(
+                              itemCount: state.tasks.length,
+                              padding: EdgeInsets.only(
+                                  right: getScreenWidth(0.04),
+                                  left: getScreenWidth(0.04),
+                                  bottom: getScreenHeight(0.15)),
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisSpacing: 25,
+                                mainAxisSpacing: 15,
+                                crossAxisCount: 2,
+                                mainAxisExtent: 225,
+                              ),
+                              itemBuilder: (context, index) {
+                                final tasks = state.tasks[index];
+                                Color _priorityBoxColor = Colors.grey;
 
-                          switch (tasks.priorityLevels) {
-                            case 'Low' || 'Düşük':
-                              _priorityBoxColor = Colors.green;
-                              break;
+                                switch (tasks.priorityLevels) {
+                                  case 'Low':
+                                    _priorityBoxColor = Colors.green;
+                                    break;
 
-                            case 'Medium' || 'Orta':
-                              _priorityBoxColor = Colors.orange;
-                              break;
+                                  case 'Medium':
+                                    _priorityBoxColor = Colors.orange;
+                                    break;
 
-                            case 'High' || 'Yüksek':
-                              _priorityBoxColor = Colors.red;
-                              break;
-                            default:
-                          }
-                          return GestureDetector(
-                            onTap: () => taskDetail(context, tasks),
-                            child: Column(
-                              children: [
-                                SizedBox(height: getScreenHeight(0.03)),
-                                Expanded(
-                                  child: Stack(
-                                    clipBehavior: Clip.none,
+                                  case 'High':
+                                    _priorityBoxColor = Colors.red;
+                                    break;
+                                  default:
+                                }
+                                return GestureDetector(
+                                  onTap: () => taskDetail(context, tasks),
+                                  child: Column(
                                     children: [
-                                      // Task Info
-                                      Container(
-                                        height: 300,
-                                        width: double.infinity,
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: getScreenWidth(0.04),
-                                          vertical: getScreenHeight(0.02),
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Color.fromARGB(
-                                                  108, 74, 115, 168),
-                                              blurRadius: 15,
-                                            ),
-                                          ],
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                      SizedBox(height: getScreenHeight(0.03)),
+                                      Expanded(
+                                        child: Stack(
+                                          clipBehavior: Clip.none,
                                           children: [
-                                            // Title
-                                            tasks.isCompleted
-                                                ? SvgPicture.asset(
-                                                    'assets/icons/done.svg',
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .displayLarge
-                                                        ?.color,
-                                                  )
-                                                : SvgPicture.asset(
-                                                    'assets/icons/nodone.svg',
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .displayLarge
-                                                        ?.color,
-                                                  ),
-                                            Text(
-                                              tasks.title,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                fontFamily: 'PoppinsSemiBold',
-                                                fontSize: 14,
+                                            // Task Info
+                                            Container(
+                                              height: 300,
+                                              width: double.infinity,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    getScreenWidth(0.04),
+                                                vertical: getScreenHeight(0.02),
+                                              ),
+                                              decoration: BoxDecoration(
                                                 color: Theme.of(context)
-                                                    .textTheme
-                                                    .displayLarge
-                                                    ?.color,
+                                                    .colorScheme
+                                                    .primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Color.fromARGB(
+                                                        108, 74, 115, 168),
+                                                    blurRadius: 15,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  // Title
+                                                  tasks.isCompleted
+                                                      ? SvgPicture.asset(
+                                                          'assets/icons/done.svg',
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .displayLarge
+                                                                  ?.color,
+                                                        )
+                                                      : SvgPicture.asset(
+                                                          'assets/icons/nodone.svg',
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .displayLarge
+                                                                  ?.color,
+                                                        ),
+                                                  Text(
+                                                    tasks.title,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'PoppinsSemiBold',
+                                                      fontSize: 14,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .displayLarge
+                                                          ?.color,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    tasks.dueDate,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'PoppinsSemiBold',
+                                                      fontSize: 14,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .displayLarge
+                                                          ?.color,
+                                                    ),
+                                                  ),
+                                                  // Priority
+                                                  Container(
+                                                    height: 30,
+                                                    width: getScreenWidth(0.15),
+                                                    decoration: BoxDecoration(
+                                                      color: _priorityBoxColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: Center(
+                                                        child: Text(
+                                                      tasks.priorityLevels,
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'PoppinsSemiBold',
+                                                        fontSize: 12,
+                                                        color: Colors.white,
+                                                      ),
+                                                    )),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            // Priority
-                                            Container(
-                                              height: 30,
-                                              width: getScreenWidth(0.15),
-                                              decoration: BoxDecoration(
-                                                color: _priorityBoxColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Center(
-                                                  child: Text(
-                                                tasks.priorityLevels,
-                                                style: TextStyle(
-                                                  fontFamily: 'PoppinsSemiBold',
-                                                  fontSize: 12,
-                                                  color: Colors.white,
+                                            // Delete Button
+                                            Positioned(
+                                              top: -getScreenHeight(0.009),
+                                              right: -getScreenWidth(0.01),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Popups().QuestionDangerPopup(
+                                                      context,
+                                                      title:
+                                                          'task_delete_popup_title'
+                                                              .tr(),
+                                                      message:
+                                                          'task_delete_popup_message'
+                                                              .tr(),
+                                                      onTopYes: () {
+                                                        if (tasks.key != null) {
+                                                          context
+                                                              .read<
+                                                                  AddTaskCubit>()
+                                                              .deleteTask(
+                                                                  tasks.key!);
+                                                        } else {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                                content: Text(
+                                                                    'Task cannot be deleted. No valid key found.')),
+                                                          );
+                                                        }
+                                                        Navigator.popUntil(
+                                                            context,
+                                                            (route) =>
+                                                                route.isFirst);
+                                                      },
+                                                      onTopNo: () =>
+                                                          Navigator.pop(
+                                                              context));
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: SvgPicture.asset(
+                                                      'assets/icons/delete.svg'),
                                                 ),
-                                              )),
+                                              ),
                                             ),
                                           ],
-                                        ),
-                                      ),
-                                      // Delete Button
-                                      Positioned(
-                                        top: -getScreenHeight(0.009),
-                                        right: -getScreenWidth(0.01),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Popups().QuestionDangerPopup(
-                                                context,
-                                                title: 'task_delete_popup_title'
-                                                    .tr(),
-                                                message:
-                                                    'task_delete_popup_message'
-                                                        .tr(),
-                                                onTopYes: () {
-                                                  if (tasks.key != null) {
-                                                    context
-                                                        .read<AddTaskCubit>()
-                                                        .deleteTask(tasks.key!);
-                                                  } else {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                          content: Text(
-                                                              'Task cannot be deleted. No valid key found.')),
-                                                    );
-                                                  }
-                                                  Navigator.popUntil(context,
-                                                      (route) => route.isFirst);
-                                                },
-                                                onTopNo: () =>
-                                                    Navigator.pop(context));
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: SvgPicture.asset(
-                                                'assets/icons/delete.svg'),
-                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
+                                );
+                              },
+                            );
+                          }
+                          return SizedBox.shrink();
                         },
                       )
                     : emptyListState(),
@@ -730,7 +924,10 @@ class _TasksViewState extends State<TasksView> {
           },
         );
       },
-    ).then((value) => setState(() {}));
+    ).then((value) {
+      setState(() {});
+      context.read<AddTaskCubit>().sortTasksByCompletion();
+    });
   }
 
   Widget emptyListState() {

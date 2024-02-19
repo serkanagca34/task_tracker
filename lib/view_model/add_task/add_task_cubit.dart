@@ -43,14 +43,45 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     getTasks();
   }
 
-  // Görevin tamamlanma durumunu değiştiren yeni fonksiyon
   void toggleTaskCompletion(int key) async {
     final box = await Hive.openBox<TaskModel>(_boxName);
     final TaskModel? task = box.get(key);
     if (task != null) {
-      task.isCompleted = !task.isCompleted; // Tamamlanma durumunu değiştir
-      await box.put(key, task); // Güncellenmiş görevi kutuya kaydet
-      getTasks(); // Tüm görevleri yeniden yükle
+      task.isCompleted = !task.isCompleted;
+      await box.put(key, task);
+      getTasks();
     }
+  }
+
+  // List Sorts
+
+  void sortTasksByLastDate() {
+    var tasks = (state as AddTaskLoaded).tasks;
+    tasks.sort((a, b) => b.dueDate.compareTo(a.dueDate));
+    emit(AddTaskLoaded(tasks));
+  }
+
+  void sortTasksByCompletion() {
+    var tasks = (state as AddTaskLoaded).tasks;
+    tasks.sort((a, b) {
+      int aVal = a.isCompleted ? 1 : 0;
+      int bVal = b.isCompleted ? 1 : 0;
+      return bVal.compareTo(aVal);
+    });
+    emit(AddTaskLoaded(tasks));
+  }
+
+  void sortTasksByPriority(String priority) {
+    var tasks = (state as AddTaskLoaded).tasks;
+    tasks.sort((a, b) {
+      if (a.priorityLevels == priority && b.priorityLevels != priority) {
+        return -1;
+      } else if (a.priorityLevels != priority && b.priorityLevels == priority) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    emit(AddTaskLoaded(tasks));
   }
 }

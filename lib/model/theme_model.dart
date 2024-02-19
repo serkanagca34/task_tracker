@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 
-part 'theme_model.g.dart'; // Bu dosya build_runner tarafından otomatik olarak oluşturulacak
+part 'theme_model.g.dart';
 
-@HiveType(typeId: 1) // typeId her model için benzersiz olmalıdır
+@HiveType(typeId: 1)
 class ThemeModel {
   @HiveField(0)
   final bool isDarkMode;

@@ -68,7 +68,14 @@
      "highest": "Y",
      "lowest": "D",
 
-     "task_completed": "Görevi Tamamladım"
+     "task_completed": "Görevi Tamamladım",
+
+     "_comment11": "Sort Texts",
+     "last_date":"SonTarih",
+     "completed":"Tamamlanan",
+     "high":"Yüksek",
+     "medium":"Orta",
+     "low":"Düşük"
      
       
 

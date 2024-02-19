@@ -24,9 +24,7 @@ class _AddTaskViewState extends State<AddTaskView> {
 
   AutovalidateMode _autovalidateMode = AutovalidateMode.onUserInteraction;
 
-  List<String> get _priorityLevels {
-    return ['priority_low'.tr(), 'priority_medium'.tr(), 'priority_high'.tr()];
-  }
+  List<String> _priorityLevels = ['High', 'Medium', 'Low'];
 
   @override
   void initState() {
