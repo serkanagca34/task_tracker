@@ -61,6 +61,7 @@
      "task_edited": "Task Edited",
      "fake_added": "Fake Api Posted",
      "fake_edited": "Fake Api Putted",
+     "task_deleted": "Task Deleted",
 
      "_comment10": "Weather",
      "weather_page_title": "Weather",
@@ -77,9 +78,13 @@
      "medium":"Medium",
      "low":"Low",
 
-     "_comment12": "Reminder Text",
+     "_comment12": "Reminder",
      "reminder_input_title": "Reminder Date",
-     "reminder_input_hint": "Select Reminder Date"
+     "reminder_input_hint": "Select Reminder Date",
+     "reminder_message": "Scheduled to remind",
+     "reminder_button_text": "Remind Me",
+
+     "cancel": "Cancel"
      
 
 

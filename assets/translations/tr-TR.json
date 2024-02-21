@@ -61,6 +61,7 @@
      "task_edited": "Görev Düzenlendi",
      "fake_added": "Sahte Api Eklendi",
      "fake_edited": "Sahte Api Düzenlendi",
+     "task_deleted": "Görev Silindi",
 
      "_comment10": "Weather",
      "weather_page_title": "Hava Durumu",
@@ -78,9 +79,18 @@
      "low":"Düşük",
 
 
-     "_comment12": "Reminder Text",
+     "_comment12": "Reminder",
      "reminder_input_title": "Hatırlatma Tarihi",
-     "reminder_input_hint": "Hatırlatma tarihi seçin"
+     "reminder_input_hint": "Hatırlatma tarihi seçin",
+     "reminder_message": "Hatırlatılmak üzere planlandı",
+     "reminder_button_text": "Hatırlat",
+
+     "cancel": "İptal"
+
+    
+
+
+     
      
       
 

@@ -15,7 +15,7 @@ import 'package:task_tacker/services/service_locator.dart';
 import 'package:task_tacker/theme/dark_theme.dart';
 import 'package:task_tacker/theme/light_theme.dart';
 import 'package:task_tacker/view/splash_view.dart';
-import 'package:task_tacker/view_model/add_task/add_task_cubit.dart';
+import 'package:task_tacker/view_model/task/task_cubit.dart';
 import 'package:task_tacker/view_model/fake_api/fake_api_cubit.dart';
 import 'package:task_tacker/view_model/language_cubit.dart';
 import 'package:task_tacker/view_model/theme_cubit.dart';
@@ -40,14 +40,8 @@ Future<void> main() async {
   await LocalNotifications().init();
   tz.initializeTimeZones();
   // Firebase Initialize
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    print('Firebase initialized successfully');
-  } catch (e) {
-    print('Firebase initialization error: $e');
-  }
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(
     EasyLocalization(
       supportedLocales: <Locale>[
@@ -69,8 +63,8 @@ class TaskTracker extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AddTaskCubit>(
-          create: (context) => locator<AddTaskCubit>(),
+        BlocProvider<TaskCubit>(
+          create: (context) => locator<TaskCubit>(),
         ),
         BlocProvider<WeatherCubit>(
           create: (context) => locator<WeatherCubit>(),

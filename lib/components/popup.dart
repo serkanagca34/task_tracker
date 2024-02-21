@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:task_tacker/constans/colors.dart';
 import 'package:task_tacker/responsive/media_query.dart';
 
 class Popups {
@@ -35,6 +34,7 @@ class Popups {
                 SizedBox(height: getScreenHeight(0.04)),
                 Text(
                   message,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     color: Theme.of(context).textTheme.displayLarge?.color,
@@ -98,6 +98,34 @@ class Popups {
     );
   }
 
+  successPopupSnackBar(BuildContext context, String message) {
+    SnackBar snackBar = SnackBar(
+      content: Text(message, style: TextStyle(fontSize: 20)),
+      backgroundColor: Colors.green,
+      dismissDirection: DismissDirection.up,
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height - 150,
+          left: 10,
+          right: 10),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  errorPopupSnackBar(BuildContext context, String message) {
+    SnackBar snackBar = SnackBar(
+      content: Text(message, style: TextStyle(fontSize: 20)),
+      backgroundColor: Colors.red,
+      dismissDirection: DismissDirection.up,
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height - 150,
+          left: 10,
+          right: 10),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   successPopup(BuildContext context, String message) {
     FToast _ftoast = FToast();
     _ftoast.init(context);
@@ -134,65 +162,6 @@ class Popups {
       ),
       gravity: ToastGravity.BOTTOM,
       toastDuration: Duration(seconds: 4),
-    );
-  }
-
-  errorPopup(BuildContext context, String message) {
-    FToast _ftoast = FToast();
-    _ftoast.init(context);
-    _ftoast.showToast(
-      positionedToastBuilder: (context, child) {
-        return Positioned(
-          bottom: getScreenHeight(0.22),
-          left: 0,
-          right: 0,
-          child: child,
-        );
-      },
-      child: Text(
-        message,
-        style: TextStyle(
-          fontFamily: 'timesbold',
-          fontSize: 16,
-          color: Color(0xffEA0048),
-        ),
-      ),
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 4),
-    );
-  }
-
-  successSnackBar(BuildContext context, {required String message}) {
-    return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 3),
-        backgroundColor: kPrimaryColor,
-        content: Text(
-          message,
-          style: TextStyle(
-            fontFamily: 'timesbold',
-            fontSize: 16,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-
-  errorSnackBar(BuildContext context, {required String message}) {
-    return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 3),
-        backgroundColor: Color.fromARGB(207, 255, 255, 255),
-        content: Text(
-          message,
-          style: TextStyle(
-            fontFamily: 'timesbold',
-            fontSize: 16,
-            color: Color(0xffEA0048),
-          ),
-        ),
-      ),
     );
   }
 }

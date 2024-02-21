@@ -13,7 +13,7 @@ ThemeData darkTheme = ThemeData(
     labelMedium: const TextStyle(color: Colors.white),
     labelLarge: const TextStyle(color: Colors.white),
     displaySmall: const TextStyle(color: Colors.white),
-    displayMedium: const TextStyle(color: Colors.white),
+    displayMedium: const TextStyle(color: Color(0xffAA975A)),
     displayLarge: const TextStyle(color: Colors.white),
   ),
   colorScheme: ColorScheme.dark(

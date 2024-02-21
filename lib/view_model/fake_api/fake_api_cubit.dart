@@ -7,12 +7,14 @@ import 'package:task_tacker/services/service_locator.dart';
 part 'fake_api_state.dart';
 
 class FakeApiCubit extends Cubit<FakeApiState> {
-  final RestApiData _api = locator<RestApiData>();
-
-  bool _isLoading = false;
   FakeApiCubit() : super(FakeApiInitial()) {
+    // Get fake api
     getFakeApiData();
   }
+
+  final _api = locator<RestApiData>();
+
+  bool _isLoading = false;
 
   // Get Data
   Future<List<FakeApiModel>> getFakeApiData() async {
@@ -39,18 +41,18 @@ class FakeApiCubit extends Cubit<FakeApiState> {
   }
 
   // Put Data
-  Future putFakeApiData(String title, String description, String duedate,
-      String priority, String ID) async {
+  Future putFakeApiData(String id, String title, String description,
+      String duedate, String priority) async {
     changeIsLoading();
-    await _api.putFakeApiData(title, description, duedate, priority, ID);
+    await _api.putFakeApiData(id, title, description, duedate, priority);
     changeIsLoading();
     getFakeApiData();
   }
 
   // Delete Data
-  Future deleteFakeApiData(String ID) async {
+  Future deleteFakeApiData(String id) async {
     changeIsLoading();
-    await _api.deleteFakeApiData(ID);
+    await _api.deleteFakeApiData(id);
     changeIsLoading();
     getFakeApiData();
   }

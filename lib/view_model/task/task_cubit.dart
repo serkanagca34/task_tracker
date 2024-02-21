@@ -5,10 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:task_tacker/model/task_model.dart';
 
-part 'add_task_state.dart';
+part 'task_state.dart';
 
-class AddTaskCubit extends Cubit<AddTaskState> {
-  AddTaskCubit() : super(AddTaskInitial());
+class TaskCubit extends Cubit<TaskState> {
+  TaskCubit() : super(TaskInitial()) {
+    getTasks();
+  }
+
+  List<String> priorityLevels = ['High', 'Medium', 'Low'];
 
   final String _boxName = 'tasksBox';
 
@@ -25,7 +29,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       index++;
     }
     displayTask = tasks;
-    emit(AddTaskLoaded(tasks));
+    emit(TaskLoaded(tasks));
   }
 
   void addTask(TaskModel task) async {
@@ -58,10 +62,9 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   }
 
   // List Sorts
-
   void sortTasksByLastDate() {
     displayTask.sort((a, b) => b.dueDate.compareTo(a.dueDate));
-    emit(AddTaskLoaded(displayTask));
+    emit(TaskLoaded(displayTask));
   }
 
   void sortTasksByCompletion() {
@@ -70,7 +73,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       int bVal = b.isCompleted ? 1 : 0;
       return bVal.compareTo(aVal);
     });
-    emit(AddTaskLoaded(displayTask));
+    emit(TaskLoaded(displayTask));
   }
 
   void sortTasksByPriority(String priority) {
@@ -83,13 +86,13 @@ class AddTaskCubit extends Cubit<AddTaskState> {
         return 0;
       }
     });
-    emit(AddTaskLoaded(displayTask));
+    emit(TaskLoaded(displayTask));
   }
 
   // List Filter
   void filterTasks(Set<String> filters) {
     if (filters.isEmpty) {
-      emit(AddTaskLoaded(displayTask));
+      emit(TaskLoaded(displayTask));
       return;
     }
 
@@ -119,6 +122,6 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       }).toList();
     }
 
-    emit(AddTaskLoaded(filteredTasks));
+    emit(TaskLoaded(filteredTasks));
   }
 }

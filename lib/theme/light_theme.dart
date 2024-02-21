@@ -14,7 +14,7 @@ ThemeData lightTheme = ThemeData(
     labelMedium: const TextStyle(color: Colors.black),
     labelLarge: const TextStyle(color: Colors.black),
     displaySmall: const TextStyle(color: Colors.black),
-    displayMedium: const TextStyle(color: Colors.black),
+    displayMedium: const TextStyle(color: Color(0xffAA975A)),
     displayLarge: const TextStyle(color: Colors.black),
   ),
   colorScheme: ColorScheme.light(

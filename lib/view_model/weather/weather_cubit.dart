@@ -8,7 +8,7 @@ import '../../services/service_locator.dart';
 part 'weather_state.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
-  final RestApiData _api = locator<RestApiData>();
+  final _api = locator<RestApiData>();
 
   bool _isLoading = false;
 

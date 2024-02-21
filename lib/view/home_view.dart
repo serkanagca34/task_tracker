@@ -1,13 +1,12 @@
 import 'dart:async';
-
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_tacker/constans/colors.dart';
 import 'package:task_tacker/responsive/media_query.dart';
-import 'package:task_tacker/view/add_task_view.dart';
-import 'package:task_tacker/view/weather_view.dart';
-import 'tasks_view.dart';
+import 'package:task_tacker/view/task/add_task_view.dart';
+import 'package:task_tacker/view/weather/weather_view.dart';
+import 'task/tasks_view.dart';
 
 class HomeView extends StatefulWidget {
   final int index;
@@ -46,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-
+    // Remote config
     _streamSubscription = remoteConfig.onConfigUpdated.listen((event) async {
       await remoteConfig.activate();
 
@@ -123,10 +122,7 @@ class _HomeViewState extends State<HomeView> {
                             padding: EdgeInsets.zero,
                             constraints: BoxConstraints(),
                             iconSize: 30,
-                            onPressed: () {
-                              _onItemTapped(i);
-                              print('index : ${i}');
-                            },
+                            onPressed: () => _onItemTapped(i),
                             icon: Container(
                               child: SvgPicture.asset(
                                 _iconList[i],
