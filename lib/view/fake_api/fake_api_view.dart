@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:task_tacker/components/custom_widgets.dart';
 import 'package:task_tacker/components/popup.dart';
-import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/view/fake_api/fake_api_add_view.dart';
 import 'package:task_tacker/view/fake_api/fake_api_edit_view.dart';
 import 'package:task_tacker/view_model/fake_api/fake_api_cubit.dart';
@@ -59,28 +59,24 @@ class _FakeApiViewState extends State<FakeApiView> {
                 child: state.fakeApiData.isNotEmpty
                     ? ListView.builder(
                         itemCount: state.fakeApiData.length,
-                        padding: EdgeInsets.only(
-                            top: getScreenHeight(0.03),
-                            bottom: getScreenHeight(0.15)),
+                        padding: EdgeInsets.only(top: 30.h, bottom: 50.h),
                         itemBuilder: (context, index) {
                           final items = state.fakeApiData[index];
                           return GestureDetector(
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: getScreenWidth(0.04)),
+                              padding: EdgeInsets.symmetric(horizontal: 15.w),
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Positioned.fill(
                                     child: Builder(
                                       builder: (context) => Container(
-                                        height: 106,
-                                        margin: EdgeInsets.only(
-                                            bottom: getScreenHeight(0.03)),
+                                        height: 106.h,
+                                        margin: EdgeInsets.only(bottom: 21.h),
                                         decoration: BoxDecoration(
                                           color: Colors.orange,
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                              BorderRadius.circular(20.r),
                                         ),
                                       ),
                                     ),
@@ -109,10 +105,9 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                   ),
                                                 )),
                                             child: Container(
-                                              height: getScreenHeight(0.12),
-                                              margin: EdgeInsets.only(
-                                                  bottom:
-                                                      getScreenHeight(0.03)),
+                                              height: 106.h,
+                                              margin:
+                                                  EdgeInsets.only(bottom: 21.h),
                                               decoration: BoxDecoration(
                                                 gradient: const LinearGradient(
                                                   colors: [
@@ -122,8 +117,9 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                 ),
                                                 borderRadius: BorderRadius.only(
                                                   bottomRight:
-                                                      Radius.circular(14),
-                                                  topRight: Radius.circular(14),
+                                                      Radius.circular(14.r),
+                                                  topRight:
+                                                      Radius.circular(14.r),
                                                 ),
                                               ),
                                               child: Icon(Icons.edit,
@@ -190,10 +186,9 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                       Navigator.pop(context));
                                             },
                                             child: Container(
-                                              height: getScreenHeight(0.12),
-                                              margin: EdgeInsets.only(
-                                                  bottom:
-                                                      getScreenHeight(0.03)),
+                                              height: 106.h,
+                                              margin:
+                                                  EdgeInsets.only(bottom: 21.h),
                                               decoration: BoxDecoration(
                                                 gradient: const LinearGradient(
                                                   colors: [
@@ -203,8 +198,9 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                 ),
                                                 borderRadius: BorderRadius.only(
                                                   bottomRight:
-                                                      Radius.circular(14),
-                                                  topRight: Radius.circular(14),
+                                                      Radius.circular(14.r),
+                                                  topRight:
+                                                      Radius.circular(14.r),
                                                 ),
                                               ),
                                               child: Column(
@@ -212,9 +208,8 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   SvgPicture.asset(
-                                                    'assets/icons/delete-white.svg',
-                                                    height: 30,
-                                                  ),
+                                                      'assets/icons/delete-white.svg',
+                                                      height: 15.h),
                                                 ],
                                               ),
                                             ),
@@ -223,19 +218,19 @@ class _FakeApiViewState extends State<FakeApiView> {
                                       ],
                                     ),
                                     child: Container(
-                                      height: getScreenHeight(0.12),
-                                      margin: EdgeInsets.only(
-                                          bottom: getScreenHeight(0.03)),
+                                      height: 90.h,
+                                      margin: EdgeInsets.only(bottom: 15.h),
                                       decoration: BoxDecoration(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .primary,
-                                        borderRadius: BorderRadius.circular(20),
+                                        borderRadius:
+                                            BorderRadius.circular(20.r),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Color.fromARGB(
                                                 108, 74, 115, 168),
-                                            blurRadius: 15,
+                                            blurRadius: 15.r,
                                           ),
                                         ],
                                       ),
@@ -247,8 +242,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(
-                                                  width: getScreenWidth(0.05)),
+                                              SizedBox(width: 20.w),
                                               // Title
                                               Expanded(
                                                 child: Text(
@@ -259,7 +253,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                   style: TextStyle(
                                                     fontFamily:
                                                         'PoppinsSemiBold',
-                                                    fontSize: 14,
+                                                    fontSize: 12.sp,
                                                     color: Theme.of(context)
                                                         .textTheme
                                                         .displayLarge
@@ -269,14 +263,15 @@ class _FakeApiViewState extends State<FakeApiView> {
                                               ),
                                               // priority
                                               Container(
-                                                height: getScreenHeight(0.04),
-                                                width: getScreenWidth(0.30),
+                                                height: 30.h,
+                                                width: 110.w,
                                                 decoration: BoxDecoration(
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .secondary,
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      BorderRadius.circular(
+                                                          10.r),
                                                 ),
                                                 child: Center(
                                                     child: Text(
@@ -284,7 +279,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                   style: TextStyle(
                                                     fontFamily:
                                                         'PoppinsSemiBold',
-                                                    fontSize: 12,
+                                                    fontSize: 10.sp,
                                                     color: Theme.of(context)
                                                         .textTheme
                                                         .displayLarge
@@ -292,16 +287,14 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                   ),
                                                 )),
                                               ),
-                                              SizedBox(
-                                                  width: getScreenWidth(0.05)),
+                                              SizedBox(width: 20.w),
                                             ],
                                           ),
                                           Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(
-                                                  width: getScreenWidth(0.05)),
+                                              SizedBox(width: 20.w),
                                               // description
                                               Expanded(
                                                 child: Text(
@@ -312,7 +305,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                   style: TextStyle(
                                                     fontFamily:
                                                         'PoppinsSemiBold',
-                                                    fontSize: 14,
+                                                    fontSize: 12.sp,
                                                     color: Theme.of(context)
                                                         .textTheme
                                                         .displayLarge
@@ -322,14 +315,15 @@ class _FakeApiViewState extends State<FakeApiView> {
                                               ),
                                               // duedate
                                               Container(
-                                                height: getScreenHeight(0.04),
-                                                width: getScreenWidth(0.30),
+                                                height: 30.h,
+                                                width: 110.w,
                                                 decoration: BoxDecoration(
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .secondary,
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      BorderRadius.circular(
+                                                          10.r),
                                                 ),
                                                 child: Center(
                                                     child: Text(
@@ -337,7 +331,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                   style: TextStyle(
                                                     fontFamily:
                                                         'PoppinsSemiBold',
-                                                    fontSize: 12,
+                                                    fontSize: 10.sp,
                                                     color: Theme.of(context)
                                                         .textTheme
                                                         .displayLarge
@@ -345,8 +339,7 @@ class _FakeApiViewState extends State<FakeApiView> {
                                                   ),
                                                 )),
                                               ),
-                                              SizedBox(
-                                                  width: getScreenWidth(0.05)),
+                                              SizedBox(width: 20.w),
                                             ],
                                           ),
                                         ],

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:task_tacker/responsive/media_query.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_tacker/view/home_view.dart';
 
 class SplashView extends StatefulWidget {
@@ -32,7 +32,6 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: FadeTransition(
@@ -50,7 +49,7 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
                   style: TextStyle(
                     fontFamily: 'PoppinsSemiBold',
                     color: Theme.of(context).textTheme.displayLarge!.color,
-                    fontSize: 40,
+                    fontSize: 40.sp,
                   ),
                 ),
               ],

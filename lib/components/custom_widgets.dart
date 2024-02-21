@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:task_tacker/constans/colors.dart';
-import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/services/service_locator.dart';
 import 'package:task_tacker/view_model/task/task_cubit.dart';
 
@@ -24,7 +24,7 @@ customAppBar({
       title,
       style: TextStyle(
         fontFamily: 'PoppinsBold',
-        fontSize: 18,
+        fontSize: 15.sp,
         color: Colors.white,
       ),
     ),
@@ -39,26 +39,26 @@ customInputDecoration({required String hintText, required Widget label}) {
     label: label,
     floatingLabelBehavior: FloatingLabelBehavior.always,
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(15.r),
       borderSide: BorderSide(color: kTextColorLight),
-      gapPadding: 10,
+      gapPadding: 10.r,
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(15.r),
       borderSide: BorderSide(color: Colors.blue),
-      gapPadding: 10,
+      gapPadding: 10.r,
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(15.r),
       borderSide: BorderSide(color: Colors.red),
-      gapPadding: 10,
+      gapPadding: 10.r,
     ),
     focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(15.r),
       borderSide: BorderSide(color: Colors.red),
-      gapPadding: 10,
+      gapPadding: 10.r,
     ),
-    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+    contentPadding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 18.r),
   );
 }
 
@@ -70,7 +70,7 @@ selectDatePicker(BuildContext context,
       return CupertinoActionSheet(
         actions: [
           SizedBox(
-            height: 180,
+            height: 150.h,
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => Navigator.of(context).pop(true),
@@ -108,14 +108,14 @@ selectListPicker(BuildContext context,
       return CupertinoActionSheet(
         actions: [
           SizedBox(
-            height: 200,
+            height: 150.h,
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => Navigator.of(context).pop(true),
               child: CupertinoPicker(
                 scrollController: FixedExtentScrollController(initialItem: 0),
                 backgroundColor: Colors.transparent,
-                itemExtent: 64,
+                itemExtent: 50.h,
                 onSelectedItemChanged: onSelectedItemChanged,
                 children: locator<TaskCubit>()
                     .priorityLevels
@@ -152,17 +152,16 @@ emptyListWidget(String message) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Lottie.asset('assets/lottie/7.json',
-            repeat: true, height: getScreenHeight(0.3)),
+        SizedBox(height: 60.h),
+        Lottie.asset('assets/lottie/7.json', repeat: true, height: 200.h),
         Text(
           message,
           style: TextStyle(
             fontFamily: 'PoppinsSemiBold',
-            fontSize: 12,
+            fontSize: 10.sp,
             color: Color.fromARGB(255, 158, 155, 155),
           ),
         ),
-        SizedBox(height: getScreenHeight(0.20)),
       ],
     ),
   );

@@ -20,6 +20,8 @@ dependencies:
   flutter_slidable: ^3.0.0
   lottie: ^2.6.0
   modal_bottom_sheet: ^3.0.0-pre
+  # Responsive
+  flutter_screenutil: ^5.9.0
   # Service
   http: ^1.0.0
   get_it: ^7.6.7

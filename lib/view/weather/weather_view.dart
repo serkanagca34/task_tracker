@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_tacker/components/custom_widgets.dart';
-import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/view_model/language_cubit.dart';
 import 'package:task_tacker/view_model/theme_cubit.dart';
 import 'package:task_tacker/view_model/weather/weather_cubit.dart';
@@ -24,40 +24,38 @@ class _WeatherViewState extends State<WeatherView> {
     );
   }
 
-  get appBar {
-    customAppBar(
-      title: 'weather_page_title'.tr(),
-      leading: IconButton(
-        onPressed: () => context.read<ThemeCubit>().toggleTheme(),
-        icon: Icon(Icons.theater_comedy_outlined),
-        color: Colors.white,
-      ),
-      actions: [
-        IconButton(
-          padding: EdgeInsets.only(right: getScreenWidth(0.04)),
-          onPressed: () {
-            context.read<LanguageCubit>().toggleLanguage();
-            setState(() {
-              _isClicked = !_isClicked;
-            });
-          },
-          icon: Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Text(
-              _isClicked ? 'TR' : 'EN',
-              style: TextStyle(
-                  fontFamily: 'PoppinsSemiBold',
-                  color: Theme.of(context).textTheme.displayLarge!.color),
+  get appBar => customAppBar(
+        title: 'weather_page_title'.tr(),
+        leading: IconButton(
+          onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+          icon: Icon(Icons.theater_comedy_outlined),
+          color: Colors.white,
+        ),
+        actions: [
+          IconButton(
+            padding: EdgeInsets.only(right: 10.w),
+            onPressed: () {
+              context.read<LanguageCubit>().toggleLanguage();
+              setState(() {
+                _isClicked = !_isClicked;
+              });
+            },
+            icon: Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                _isClicked ? 'TR' : 'EN',
+                style: TextStyle(
+                    fontFamily: 'PoppinsSemiBold',
+                    color: Theme.of(context).textTheme.displayLarge!.color),
+              ),
             ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 
   get body {
     return Column(
@@ -72,27 +70,27 @@ class _WeatherViewState extends State<WeatherView> {
               return Center(
                 child: Column(
                   children: [
-                    SizedBox(height: getScreenHeight(0.10)),
+                    SizedBox(height: 70.h),
                     // Title
                     Text(
                       'weather_my_location'.tr(),
                       style: TextStyle(
                         fontFamily: 'PoppinsSemiBold',
-                        fontSize: 25,
+                        fontSize: 22.sp,
                         color: Theme.of(context).textTheme.displayLarge?.color,
                       ),
                     ),
-                    SizedBox(height: getScreenHeight(0.01)),
+                    SizedBox(height: 10.h),
                     // My Location City
                     Text(
                       state.weatherData.name!,
                       style: TextStyle(
                         fontFamily: 'PoppinsSemiBold',
-                        fontSize: 18,
+                        fontSize: 16.sp,
                         color: Theme.of(context).textTheme.displayLarge?.color,
                       ),
                     ),
-                    SizedBox(height: getScreenHeight(0.01)),
+                    SizedBox(height: 10.h),
                     // Tepm
                     Stack(
                       clipBehavior: Clip.none,
@@ -103,15 +101,16 @@ class _WeatherViewState extends State<WeatherView> {
                               .toString(),
                           style: TextStyle(
                             fontFamily: 'PoppinsSemiBold',
-                            fontSize: 40,
+                            fontSize: 30.sp,
                             color:
                                 Theme.of(context).textTheme.displayLarge?.color,
                           ),
                         ),
                         Positioned(
-                            right: -20,
+                            right: -16.w,
                             child: SvgPicture.asset(
                               'assets/icons/temperature.svg',
+                              height: 18.h,
                               color: Theme.of(context)
                                   .textTheme
                                   .displayLarge
@@ -119,17 +118,17 @@ class _WeatherViewState extends State<WeatherView> {
                             )),
                       ],
                     ),
-                    SizedBox(height: getScreenHeight(0.01)),
+                    SizedBox(height: 10.h),
                     // Weather State
                     Text(
                       state.weatherData.weather![0].main!,
                       style: TextStyle(
                         fontFamily: 'PoppinsSemiBold',
-                        fontSize: 18,
+                        fontSize: 15.sp,
                         color: Theme.of(context).textTheme.displayLarge?.color,
                       ),
                     ),
-                    SizedBox(height: getScreenHeight(0.01)),
+                    SizedBox(height: 10.h),
                     // Highest and Lowest
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -142,7 +141,7 @@ class _WeatherViewState extends State<WeatherView> {
                                   ': ${convertKelvinToCelsius(state.weatherData.main!.tempMax!).toInt().toString()}',
                               style: TextStyle(
                                 fontFamily: 'PoppinsSemiBold',
-                                fontSize: 18,
+                                fontSize: 14.sp,
                                 color: Theme.of(context)
                                     .textTheme
                                     .displayLarge
@@ -150,10 +149,10 @@ class _WeatherViewState extends State<WeatherView> {
                               ),
                             ),
                             Positioned(
-                              right: -10,
+                              right: -6.w,
                               child: SvgPicture.asset(
                                 'assets/icons/nodone.svg',
-                                height: 10,
+                                height: 6.h,
                                 color: Theme.of(context)
                                     .textTheme
                                     .displayLarge
@@ -162,7 +161,7 @@ class _WeatherViewState extends State<WeatherView> {
                             )
                           ],
                         ),
-                        SizedBox(width: getScreenWidth(0.04)),
+                        SizedBox(width: 20.h),
                         Stack(
                           clipBehavior: Clip.none,
                           children: [
@@ -171,7 +170,7 @@ class _WeatherViewState extends State<WeatherView> {
                                   ': ${convertKelvinToCelsius(state.weatherData.main!.tempMin!).toInt().toString()}',
                               style: TextStyle(
                                 fontFamily: 'PoppinsSemiBold',
-                                fontSize: 18,
+                                fontSize: 14.sp,
                                 color: Theme.of(context)
                                     .textTheme
                                     .displayLarge
@@ -179,10 +178,10 @@ class _WeatherViewState extends State<WeatherView> {
                               ),
                             ),
                             Positioned(
-                              right: -10,
+                              right: -6.w,
                               child: SvgPicture.asset(
                                 'assets/icons/nodone.svg',
-                                height: 10,
+                                height: 6.h,
                                 color: Theme.of(context)
                                     .textTheme
                                     .displayLarge

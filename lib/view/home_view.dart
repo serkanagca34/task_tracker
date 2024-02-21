@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_tacker/constans/colors.dart';
-import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/view/task/add_task_view.dart';
 import 'package:task_tacker/view/weather/weather_view.dart';
 import 'task/tasks_view.dart';
@@ -23,7 +23,9 @@ class _HomeViewState extends State<HomeView> {
   late StreamSubscription<RemoteConfigUpdate> _streamSubscription;
 
   int selectedIndex = 0;
+
   _HomeViewState({required this.selectedIndex});
+
   static List<Widget> _widgetOptions = <Widget>[
     TasksView(),
     AddTaskView(),
@@ -67,8 +69,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Stack(
@@ -81,7 +81,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget botNavBar() {
-    SizeConfig().init(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Positioned(
@@ -89,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
       left: screenWidth * 0.035,
       width: screenWidth,
       child: Padding(
-        padding: EdgeInsets.only(left: getScreenWidth(0.00)),
+        padding: EdgeInsets.only(left: 0.w),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -105,9 +104,9 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: getScreenWidth(0.10),
-                    right: getScreenWidth(0.17),
-                    top: getScreenHeight(0.015),
+                    left: 25.w,
+                    right: 50.w,
+                    top: 10.h,
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +131,7 @@ class _HomeViewState extends State<HomeView> {
                                         .textTheme
                                         .displayLarge!
                                         .color,
-                                height: 30,
+                                height: 20.h,
                               ),
                             ),
                           ),
@@ -148,14 +147,14 @@ class _HomeViewState extends State<HomeView> {
               child: Positioned(
                 top: screenWidth < 360
                     ? -screenHeight * 0.045
-                    : -screenHeight * 0.035,
+                    : -screenHeight * 0.030,
                 left: screenWidth * 0.26,
                 right: screenWidth * 0.33,
                 child: GestureDetector(
                   onTap: () => _onItemTapped(1),
                   child: Container(
-                      height: 59,
-                      width: 59,
+                      height: 45.h,
+                      width: 45.w,
                       padding: EdgeInsets.all(13),
                       decoration: BoxDecoration(
                         color: Colors.blueGrey,

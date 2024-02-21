@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:task_tacker/components/custom_widgets.dart';
 import 'package:task_tacker/components/popup.dart';
 import 'package:task_tacker/model/task_model.dart';
-import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/services/hive_boxes.dart';
 import 'package:task_tacker/services/notifications.dart';
 import 'package:task_tacker/view/task/edit_task_view.dart';
@@ -30,6 +30,8 @@ class _TasksViewState extends State<TasksView> {
   bool _isSelectedRemindDate = false;
 
   TextEditingController _reminderDateController = TextEditingController();
+
+  final _screenWidth = ScreenUtil().screenWidth;
 
   @override
   void initState() {
@@ -59,7 +61,7 @@ class _TasksViewState extends State<TasksView> {
               if (state is TaskLoaded) {
                 return state.tasks.isNotEmpty
                     ? IconButton(
-                        padding: EdgeInsets.only(right: getScreenWidth(0.05)),
+                        padding: EdgeInsets.only(right: 20.w),
                         constraints: BoxConstraints(),
                         onPressed: () async {
                           await gridDesingChangeBox.put(
@@ -96,38 +98,34 @@ class _TasksViewState extends State<TasksView> {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
         if (state is TaskLoaded) {
-          return state.tasks.isNotEmpty
-              ? Column(
-                  children: [
-                    SizedBox(height: getScreenHeight(0.01)),
-                    sortAndFilter,
-                    // Tasks List
-                    Expanded(
+          return Column(
+            children: [
+              SizedBox(height: 10.h),
+              sortAndFilter,
+              // Tasks List
+              state.tasks.isNotEmpty
+                  ? Expanded(
                       child: ListView.builder(
                         itemCount: state.tasks.length,
-                        padding: EdgeInsets.only(
-                            top: getScreenHeight(0.03),
-                            bottom: getScreenHeight(0.15)),
+                        padding: EdgeInsets.only(top: 25.h, bottom: 80.h),
                         itemBuilder: (context, index) {
                           final tasks = state.tasks[index];
                           return GestureDetector(
                             onTap: () => taskDetail(context, tasks),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: getScreenWidth(0.04)),
+                              padding: EdgeInsets.symmetric(horizontal: 15.w),
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Positioned.fill(
                                     child: Builder(
                                       builder: (context) => Container(
-                                        height: 106,
-                                        margin: EdgeInsets.only(
-                                            bottom: getScreenHeight(0.03)),
+                                        height: 106.h,
+                                        margin: EdgeInsets.only(bottom: 21.h),
                                         decoration: BoxDecoration(
                                           color: Colors.orange,
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                              BorderRadius.circular(20.r),
                                         ),
                                       ),
                                     ),
@@ -153,10 +151,9 @@ class _TasksViewState extends State<TasksView> {
                                                   ));
                                             },
                                             child: Container(
-                                              height: getScreenHeight(0.10),
-                                              margin: EdgeInsets.only(
-                                                  bottom:
-                                                      getScreenHeight(0.03)),
+                                              height: 106.h,
+                                              margin:
+                                                  EdgeInsets.only(bottom: 21.h),
                                               decoration: BoxDecoration(
                                                 gradient: const LinearGradient(
                                                   colors: [
@@ -166,8 +163,9 @@ class _TasksViewState extends State<TasksView> {
                                                 ),
                                                 borderRadius: BorderRadius.only(
                                                   bottomRight:
-                                                      Radius.circular(14),
-                                                  topRight: Radius.circular(14),
+                                                      Radius.circular(14.r),
+                                                  topRight:
+                                                      Radius.circular(14.r),
                                                 ),
                                               ),
                                               child: Icon(Icons.edit,
@@ -214,10 +212,9 @@ class _TasksViewState extends State<TasksView> {
                                                       Navigator.pop(context));
                                             },
                                             child: Container(
-                                              height: getScreenHeight(0.10),
-                                              margin: EdgeInsets.only(
-                                                  bottom:
-                                                      getScreenHeight(0.03)),
+                                              height: 106.h,
+                                              margin:
+                                                  EdgeInsets.only(bottom: 21.h),
                                               decoration: BoxDecoration(
                                                 gradient: const LinearGradient(
                                                   colors: [
@@ -227,8 +224,9 @@ class _TasksViewState extends State<TasksView> {
                                                 ),
                                                 borderRadius: BorderRadius.only(
                                                   bottomRight:
-                                                      Radius.circular(14),
-                                                  topRight: Radius.circular(14),
+                                                      Radius.circular(14.r),
+                                                  topRight:
+                                                      Radius.circular(14.r),
                                                 ),
                                               ),
                                               child: Column(
@@ -236,9 +234,8 @@ class _TasksViewState extends State<TasksView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   SvgPicture.asset(
-                                                    'assets/icons/delete-white.svg',
-                                                    height: 30,
-                                                  ),
+                                                      'assets/icons/delete-white.svg',
+                                                      height: 15.h),
                                                 ],
                                               ),
                                             ),
@@ -247,9 +244,8 @@ class _TasksViewState extends State<TasksView> {
                                       ],
                                     ),
                                     child: Container(
-                                      height: getScreenHeight(0.10),
-                                      margin: EdgeInsets.only(
-                                          bottom: getScreenHeight(0.03)),
+                                      height: 70.h,
+                                      margin: EdgeInsets.only(bottom: 20.h),
                                       decoration: BoxDecoration(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -259,13 +255,13 @@ class _TasksViewState extends State<TasksView> {
                                           BoxShadow(
                                             color: Color.fromARGB(
                                                 108, 74, 115, 168),
-                                            blurRadius: 15,
+                                            blurRadius: 15.r,
                                           ),
                                         ],
                                       ),
                                       child: Row(
                                         children: [
-                                          SizedBox(width: getScreenWidth(0.05)),
+                                          SizedBox(width: 15.w),
                                           // Complete icons
                                           tasks.isCompleted
                                               ? SvgPicture.asset(
@@ -282,13 +278,13 @@ class _TasksViewState extends State<TasksView> {
                                                       .displayLarge
                                                       ?.color,
                                                 ),
-                                          SizedBox(width: getScreenWidth(0.04)),
+                                          SizedBox(width: 15.w),
                                           // Title & date
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.center,
                                             children: [
                                               // Title
                                               Text(
@@ -297,13 +293,14 @@ class _TasksViewState extends State<TasksView> {
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                   fontFamily: 'PoppinsSemiBold',
-                                                  fontSize: 14,
+                                                  fontSize: 12.sp,
                                                   color: Theme.of(context)
                                                       .textTheme
                                                       .displayLarge
                                                       ?.color,
                                                 ),
                                               ),
+                                              SizedBox(height: 10.h),
                                               // Date
                                               Text(
                                                 tasks.dueDate,
@@ -311,7 +308,7 @@ class _TasksViewState extends State<TasksView> {
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                   fontFamily: 'PoppinsSemiBold',
-                                                  fontSize: 14,
+                                                  fontSize: 12.sp,
                                                   color: Theme.of(context)
                                                       .textTheme
                                                       .displayMedium!
@@ -323,8 +320,8 @@ class _TasksViewState extends State<TasksView> {
                                           Spacer(),
                                           // Priority
                                           Container(
-                                            height: getScreenHeight(0.05),
-                                            width: getScreenWidth(0.15),
+                                            height: 35.h,
+                                            width: 60.w,
                                             decoration: BoxDecoration(
                                               color: getBoxColor(
                                                   tasks.priorityLevels),
@@ -336,12 +333,12 @@ class _TasksViewState extends State<TasksView> {
                                               tasks.priorityLevels,
                                               style: TextStyle(
                                                 fontFamily: 'PoppinsSemiBold',
-                                                fontSize: 12,
+                                                fontSize: 10.sp,
                                                 color: Colors.white,
                                               ),
                                             )),
                                           ),
-                                          SizedBox(width: getScreenWidth(0.05)),
+                                          SizedBox(width: 15.w),
                                         ],
                                       ),
                                     ),
@@ -352,10 +349,10 @@ class _TasksViewState extends State<TasksView> {
                           );
                         },
                       ),
-                    ),
-                  ],
-                )
-              : emptyListWidget('no_task'.tr());
+                    )
+                  : emptyListWidget('no_task'.tr()),
+            ],
+          );
         }
         return SizedBox.shrink();
       },
@@ -368,24 +365,22 @@ class _TasksViewState extends State<TasksView> {
         if (state is TaskLoaded) {
           return Column(
             children: [
-              SizedBox(height: getScreenHeight(0.01)),
+              SizedBox(height: 10.h),
               sortAndFilter,
               // List
-              Expanded(
-                child: state.tasks.isNotEmpty
-                    ? GridView.builder(
+              state.tasks.isNotEmpty
+                  ? Expanded(
+                      child: GridView.builder(
                         itemCount: state.tasks.length,
                         padding: EdgeInsets.only(
-                            right: getScreenWidth(0.04),
-                            left: getScreenWidth(0.04),
-                            bottom: getScreenHeight(0.15)),
+                            right: 15.w, left: 15.w, bottom: 80.h),
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 25,
-                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 20.h,
+                          mainAxisSpacing: 15.w,
                           crossAxisCount: 2,
-                          mainAxisExtent: 225,
+                          mainAxisExtent: 200.w,
                         ),
                         itemBuilder: (context, index) {
                           final tasks = state.tasks[index];
@@ -393,30 +388,27 @@ class _TasksViewState extends State<TasksView> {
                             onTap: () => taskDetail(context, tasks),
                             child: Column(
                               children: [
-                                SizedBox(height: getScreenHeight(0.03)),
+                                SizedBox(height: 20.h),
                                 Expanded(
                                   child: Stack(
                                     clipBehavior: Clip.none,
                                     children: [
                                       // Task Info
                                       Container(
-                                        height: 300,
-                                        width: double.infinity,
+                                        width: _screenWidth,
                                         padding: EdgeInsets.symmetric(
-                                          horizontal: getScreenWidth(0.04),
-                                          vertical: getScreenHeight(0.02),
-                                        ),
+                                            horizontal: 20.w, vertical: 10.h),
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                              BorderRadius.circular(20.r),
                                           boxShadow: [
                                             BoxShadow(
                                               color: Color.fromARGB(
                                                   108, 74, 115, 168),
-                                              blurRadius: 15,
+                                              blurRadius: 15.r,
                                             ),
                                           ],
                                         ),
@@ -449,7 +441,7 @@ class _TasksViewState extends State<TasksView> {
                                               maxLines: 1,
                                               style: TextStyle(
                                                 fontFamily: 'PoppinsSemiBold',
-                                                fontSize: 14,
+                                                fontSize: 12.sp,
                                                 color: Theme.of(context)
                                                     .textTheme
                                                     .displayLarge
@@ -463,29 +455,29 @@ class _TasksViewState extends State<TasksView> {
                                               maxLines: 1,
                                               style: TextStyle(
                                                 fontFamily: 'PoppinsSemiBold',
-                                                fontSize: 14,
+                                                fontSize: 12.sp,
                                                 color: Theme.of(context)
                                                     .textTheme
-                                                    .displayLarge
-                                                    ?.color,
+                                                    .displayMedium!
+                                                    .color,
                                               ),
                                             ),
                                             // Priority
                                             Container(
-                                              height: 30,
-                                              width: getScreenWidth(0.15),
+                                              height: 25.h,
+                                              width: 55.w,
                                               decoration: BoxDecoration(
                                                 color: getBoxColor(
                                                     tasks.priorityLevels),
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(10.r),
                                               ),
                                               child: Center(
                                                   child: Text(
                                                 tasks.priorityLevels,
                                                 style: TextStyle(
                                                   fontFamily: 'PoppinsSemiBold',
-                                                  fontSize: 12,
+                                                  fontSize: 10.sp,
                                                   color: Colors.white,
                                                 ),
                                               )),
@@ -495,8 +487,8 @@ class _TasksViewState extends State<TasksView> {
                                       ),
                                       // Delete Button
                                       Positioned(
-                                        top: -getScreenHeight(0.009),
-                                        right: -getScreenWidth(0.01),
+                                        top: -6.h,
+                                        right: -3.w,
                                         child: GestureDetector(
                                           onTap: () {
                                             Popups().QuestionDangerPopup(
@@ -511,6 +503,12 @@ class _TasksViewState extends State<TasksView> {
                                                     context
                                                         .read<TaskCubit>()
                                                         .deleteTask(tasks.key!);
+
+                                                    Popups()
+                                                        .successPopupSnackBar(
+                                                            context,
+                                                            'task_deleted'
+                                                                .tr());
                                                   } else {
                                                     Popups().errorPopupSnackBar(
                                                         context,
@@ -523,7 +521,7 @@ class _TasksViewState extends State<TasksView> {
                                                     Navigator.pop(context));
                                           },
                                           child: Container(
-                                            padding: EdgeInsets.all(10),
+                                            padding: EdgeInsets.all(8.h),
                                             decoration: BoxDecoration(
                                               color: Theme.of(context)
                                                   .colorScheme
@@ -531,7 +529,8 @@ class _TasksViewState extends State<TasksView> {
                                               shape: BoxShape.circle,
                                             ),
                                             child: SvgPicture.asset(
-                                                'assets/icons/delete.svg'),
+                                                'assets/icons/delete.svg',
+                                                height: 10.h),
                                           ),
                                         ),
                                       ),
@@ -542,9 +541,9 @@ class _TasksViewState extends State<TasksView> {
                             ),
                           );
                         },
-                      )
-                    : emptyListWidget('no_task'.tr()),
-              ),
+                      ),
+                    )
+                  : emptyListWidget('no_task'.tr()),
             ],
           );
         }
@@ -555,10 +554,10 @@ class _TasksViewState extends State<TasksView> {
 
   Widget get sortAndFilter {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
+      padding: EdgeInsets.symmetric(horizontal: 15.w),
       child: Row(
         children: [
-          SizedBox(width: getScreenWidth(0.02)),
+          SizedBox(width: 5.w),
           // Sort
           DropdownButton<String>(
             icon: Icon(Icons.sort),
@@ -645,9 +644,9 @@ class _TasksViewState extends State<TasksView> {
       expand: true,
       enableDrag: true,
       barrierColor: Colors.transparent.withOpacity(0.5),
-      topRadius: Radius.circular(35),
+      topRadius: Radius.circular(35.r),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
       ),
       context: context,
       builder: (context) {
@@ -656,11 +655,11 @@ class _TasksViewState extends State<TasksView> {
             return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.background,
               body: Padding(
-                padding: EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: getScreenHeight(0.02)),
+                      SizedBox(height: 20.h),
                       Center(
                         child: Container(
                           height: 5,
@@ -672,7 +671,7 @@ class _TasksViewState extends State<TasksView> {
                           ),
                         ),
                       ),
-                      SizedBox(height: getScreenHeight(0.03)),
+                      SizedBox(height: 15.h),
                       // Modal Title
                       Text(
                         'task_detail_title'.tr(),
@@ -680,22 +679,22 @@ class _TasksViewState extends State<TasksView> {
                           color:
                               Theme.of(context).textTheme.displayLarge?.color,
                           fontFamily: 'PoppinsSemiBold',
-                          fontSize: 22,
+                          fontSize: 18.sp,
                         ),
                       ),
-                      SizedBox(height: getScreenHeight(0.05)),
+                      SizedBox(height: 30.h),
                       // Description
                       Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
-                        padding: EdgeInsets.all(10),
+                        width: _screenWidth,
+                        margin: EdgeInsets.only(bottom: 25.h),
+                        padding: EdgeInsets.all(10.h),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.r),
                           boxShadow: [
                             BoxShadow(
                               color: Color(0xff061B3D).withOpacity(0.25),
-                              blurRadius: 15,
+                              blurRadius: 15.r,
                             )
                           ],
                         ),
@@ -703,10 +702,10 @@ class _TasksViewState extends State<TasksView> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Icon(Icons.description),
-                            SizedBox(height: getScreenHeight(0.02)),
+                            SizedBox(height: 8.h),
                             Text('form_description'.tr(),
                                 style: titleTextStyle),
-                            SizedBox(height: getScreenHeight(0.02)),
+                            SizedBox(height: 12.h),
                             Text(taskDetail.description,
                                 style: dataDetailTextStyle),
                           ],
@@ -714,16 +713,16 @@ class _TasksViewState extends State<TasksView> {
                       ),
                       // Due Date
                       Container(
-                        height: 120,
-                        width: double.infinity,
-                        margin: EdgeInsets.only(bottom: getScreenHeight(0.04)),
+                        height: 100.h,
+                        width: _screenWidth,
+                        margin: EdgeInsets.only(bottom: 25.h),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.r),
                           boxShadow: [
                             BoxShadow(
                               color: Color(0xff061B3D).withOpacity(0.25),
-                              blurRadius: 15,
+                              blurRadius: 15.r,
                             )
                           ],
                         ),
@@ -751,7 +750,7 @@ class _TasksViewState extends State<TasksView> {
                           setState(() {});
                         },
                       ),
-                      SizedBox(height: getScreenHeight(0.03)),
+                      SizedBox(height: 20.h),
                       // Select Reminder Date
                       TextFormField(
                         controller: _reminderDateController,
@@ -773,7 +772,7 @@ class _TasksViewState extends State<TasksView> {
                           },
                         ),
                       ),
-                      SizedBox(height: getScreenHeight(0.03)),
+                      SizedBox(height: 20.h),
                       // Remind Button
                       Visibility(
                         visible: _isSelectedRemindDate,
@@ -794,10 +793,10 @@ class _TasksViewState extends State<TasksView> {
                             });
                           },
                           style: ButtonStyle(
-                            minimumSize: MaterialStatePropertyAll(
-                                Size(double.infinity, 55)),
-                            maximumSize: MaterialStatePropertyAll(
-                                Size(double.infinity, 55)),
+                            minimumSize:
+                                MaterialStatePropertyAll(Size(310.w, 45.h)),
+                            maximumSize:
+                                MaterialStatePropertyAll(Size(310.w, 45.h)),
                             backgroundColor: MaterialStatePropertyAll(
                                 Theme.of(context).colorScheme.secondary),
                             shape: MaterialStatePropertyAll(
@@ -814,7 +813,7 @@ class _TasksViewState extends State<TasksView> {
                           ),
                         ),
                       ),
-                      SizedBox(height: getScreenHeight(0.03)),
+                      SizedBox(height: 30.h),
                       // Buttons
                       Row(
                         children: [
@@ -831,11 +830,11 @@ class _TasksViewState extends State<TasksView> {
                                     ));
                               },
                               child: Container(
-                                height: getScreenHeight(0.06),
-                                width: double.infinity,
+                                height: 40.h,
+                                width: _screenWidth,
                                 decoration: BoxDecoration(
                                   color: Colors.orange.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(20.r),
                                   border: Border.all(color: Colors.orange),
                                 ),
                                 child: Center(
@@ -844,14 +843,14 @@ class _TasksViewState extends State<TasksView> {
                                     style: TextStyle(
                                       color: Colors.orange,
                                       fontFamily: 'PoppinsSemiBold',
-                                      fontSize: 16,
+                                      fontSize: 12.sp,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(width: getScreenWidth(0.05)),
+                          SizedBox(width: 20.h),
                           // Delete Button
                           Expanded(
                             child: GestureDetector(
@@ -877,11 +876,11 @@ class _TasksViewState extends State<TasksView> {
                                     onTopNo: () => Navigator.pop(context));
                               },
                               child: Container(
-                                height: getScreenHeight(0.06),
-                                width: double.infinity,
+                                height: 40.h,
+                                width: _screenWidth,
                                 decoration: BoxDecoration(
                                   color: Color.fromARGB(44, 244, 67, 54),
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(20.r),
                                   border: Border.all(color: Colors.red),
                                 ),
                                 child: Center(
@@ -890,7 +889,7 @@ class _TasksViewState extends State<TasksView> {
                                     style: TextStyle(
                                       color: Colors.red,
                                       fontFamily: 'PoppinsSemiBold',
-                                      fontSize: 16,
+                                      fontSize: 14.sp,
                                     ),
                                   ),
                                 ),
@@ -899,7 +898,6 @@ class _TasksViewState extends State<TasksView> {
                           ),
                         ],
                       ),
-                      SizedBox(height: getScreenHeight(0.05)),
                     ],
                   ),
                 ),

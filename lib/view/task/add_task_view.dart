@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_tacker/components/custom_widgets.dart';
 import 'package:task_tacker/components/popup.dart';
 import 'package:task_tacker/model/task_model.dart';
-import 'package:task_tacker/responsive/media_query.dart';
 import 'package:task_tacker/services/service_locator.dart';
 import 'package:task_tacker/view_model/task/task_cubit.dart';
 
@@ -55,8 +55,8 @@ class _AddTaskViewState extends State<AddTaskView> {
   get appBar => customAppBar(
         title: 'add_task_form_title'.tr(),
         centerTitle: false,
-        titleSpacing: getScreenWidth(0.05),
-        toolbarHeight: getScreenHeight(0.08),
+        titleSpacing: 20.w,
+        toolbarHeight: 55.h,
         actions: [
           // Add Button
           BlocConsumer<TaskCubit, TaskState>(
@@ -68,11 +68,7 @@ class _AddTaskViewState extends State<AddTaskView> {
             },
             builder: (context, state) {
               return Padding(
-                padding: EdgeInsets.only(
-                  right: getScreenWidth(0.05),
-                  top: getScreenHeight(0.015),
-                  bottom: getScreenHeight(0.015),
-                ),
+                padding: EdgeInsets.only(right: 20.w, top: 10.h, bottom: 10.h),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -87,14 +83,12 @@ class _AddTaskViewState extends State<AddTaskView> {
                     }
                   },
                   style: ButtonStyle(
-                    minimumSize: MaterialStatePropertyAll(
-                        Size(getScreenWidth(0.20), getScreenHeight(0.10))),
-                    maximumSize: MaterialStatePropertyAll(
-                        Size(getScreenWidth(0.20), getScreenHeight(0.10))),
+                    minimumSize: MaterialStatePropertyAll(Size(75.w, 50.h)),
+                    maximumSize: MaterialStatePropertyAll(Size(75.w, 50.h)),
                     backgroundColor: MaterialStatePropertyAll(
                         Theme.of(context).colorScheme.secondary),
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                        borderRadius: BorderRadius.circular(10.r))),
                   ),
                   child: Text(
                     'add_task_form_button_text'.tr(),
@@ -112,11 +106,11 @@ class _AddTaskViewState extends State<AddTaskView> {
     return Form(
       key: _formKey,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: getScreenWidth(0.05)),
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: getScreenHeight(0.05)),
+              SizedBox(height: 35.h),
               // Title
               TextFormField(
                 controller: _titleController,
@@ -137,7 +131,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                   return null;
                 },
               ),
-              SizedBox(height: getScreenHeight(0.05)),
+              SizedBox(height: 35.h),
               // Description
               TextFormField(
                 controller: _descriptionController,
@@ -154,7 +148,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                   return null;
                 },
               ),
-              SizedBox(height: getScreenHeight(0.05)),
+              SizedBox(height: 35.h),
               // Due Date
               TextFormField(
                 controller: _dueDateController,
@@ -183,7 +177,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                   return null;
                 },
               ),
-              SizedBox(height: getScreenHeight(0.05)),
+              SizedBox(height: 35.h),
               // PriorityLevel
               TextFormField(
                 controller: _priorityLevelsController,
@@ -211,7 +205,6 @@ class _AddTaskViewState extends State<AddTaskView> {
                   return null;
                 },
               ),
-              SizedBox(height: getScreenHeight(0.05)),
             ],
           ),
         ),
